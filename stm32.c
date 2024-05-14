@@ -8,7 +8,7 @@
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
 //0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
 //0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
-//0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD}}or{NACK}
+//0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss}->{EPS ACK WD}}or{NACK}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}
 //0x0c=12,SOF  ,Switch OFF subsystem           ,Master,EPS   , {SOF PYLD}or{SOF ADCS}or{SOF GCS}
 //0x15=21,SM   ,Set subsystem Mode of operation,Master,ALL   , {SM xxx x}->{EPS ACK SM xxx y MASTER} xxx=subsyt, y=mode
@@ -52,7 +52,6 @@ int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;int hyphen=45
 
 //OK.....data
 int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY,space,EPS};
-
 
 
 //OK
@@ -229,9 +228,13 @@ if(
 (receive_symbol[0 ]==W)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
 (receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)
 ){//rd detected
-for(int index=0;index<=99;index++){
-  byte_transmit((eps_data[index]));
-}//for..transmit entire 100 byte array
+for(int index=7;index<=106;index++){
+  eps_data[index-7]=receive_symbol[index];
+}//for...overwrite the data memory
+int response={E,P,S,space,A,C,K,space,W,D};
+for(int index=0;index<=9;index++){
+  byte_transmit(response[index]);
+}//for
 }//rd_detected
 else{nack_response();}
 return 0;
