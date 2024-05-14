@@ -1,3 +1,4 @@
+//memory saving might be required
 //Commands called by ASCII
 
 //hex=dec,cmd name, src, dest
@@ -5,7 +6,7 @@
 //0x02=2 ,ACK  ,Acknowledge reply              ,ALL   ,Master, {ACK}//not applicable
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
-//0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC xxxxx yyyyy}->{EPS ACK PD xxxxx yyyyy}or{NACK}
+//0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
 //0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK RD MASTER}
 //0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD MASTER}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}
@@ -48,6 +49,20 @@ int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;
+
+//OK
+int ascii_to_dec(int x){
+if(==zero ){return 0;}//if
+if(==one  ){return 1;}//if
+if(==two  ){return 2;}//if
+if(==three){return 3;}//if
+if(==four ){return 4;}//if
+if(==five ){return 5;}//if
+if(==six  ){return 6;}//if
+if(==seven){return 7;}//if
+if(==eight){return 8;}//if
+if(==nine ){return 9;}//if
+}//ascii_to_dec
 
 //OK
 int receive_binary [400];
@@ -130,7 +145,8 @@ return 0;
 int gd_check(){
 if(
 (receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&
-(receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&/*review TX ACTIVE*/
+(receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&
+/*review TX ACTIVE*/
 ){//gd detected
 int response_array[]={A,C,K,space,
                       S,P,C,space,
@@ -146,23 +162,42 @@ return 0;
 }
 
 
-/**HMMMM
+//OK
+//{PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
 int pd_check(){
 if(
-(receive_symbol[0]==P)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&(receive_symbol[3]==E)&&
-(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&(receive_symbol[6]==space)&&/*review TX ACTIVE*/
+(receive_symbol[0 ]==P)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
+(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)&&(receive_symbol[6 ]==space)&&
+(receive_symbol[7 ]==S)&&(receive_symbol[8 ]==P)&&(receive_symbol[9 ]==C)&&(receive_symbol[10]==space)&&
+(receive_symbol[19]==I)&&(receive_symbol[20]==P)&&(receive_symbol[21]==C)&&(receive_symbol[22]==space)&&
+/*review TX ACTIVE*/
 ){//pd detected
-receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];
-int response_array[31]={E,P,S,space,A,C,K,space,P,D,space,S,P,C,space,E,6,space,I,P,C,space,E,6,space,M,A,S,T,E,R};
-for(int symbol_index=0;symbol_index<=30;symbol_index++){//for
+symbol_pause_count=((ascii_to_dec(receive_symbol[11])*1000000)+
+                    (ascii_to_dec(receive_symbol[12])*100000 )+
+                    (ascii_to_dec(receive_symbol[13])*10000  )+
+                    (ascii_to_dec(receive_symbol[14])*1000   )+
+                    (ascii_to_dec(receive_symbol[15])*100    )+
+                    (ascii_to_dec(receive_symbol[16])*10     )+
+                     ascii_to_dec(receive_symbol[17])        );
+intermission_pause_count=((ascii_to_dec(receive_symbol[23])*1000000)+
+                          (ascii_to_dec(receive_symbol[24])*100000 )+
+                          (ascii_to_dec(receive_symbol[25])*10000  )+
+                          (ascii_to_dec(receive_symbol[26])*1000   )+
+                          (ascii_to_dec(receive_symbol[27])*100    )+
+                          (ascii_to_dec(receive_symbol[28])*10     )+
+                           ascii_to_dec(receive_symbol[29])        );
+int response_array[31]={E,P,S,space,
+                        A,C,K,space,
+                        P,D,space,
+                        S,P,C,space,
+                        I,P,C};
+for(int symbol_index=0;symbol_index<=17;symbol_index++){//for
   byte_transmit((response_array[symbol_index]));
 }//for
 }//pd detected
-else{if(/*review TX ACTIVE*/){nack_response();}}
+else{nack_response();}
 return 0;
-}
-HMM
-***********/
+}//pd_check
 
 
 
@@ -210,31 +245,6 @@ return 0;
 
 
 /*******************************************/
-
-//EPS  - battery voltage, panel voltage, messages
-//OBC  - messages
-//ADCS - on,off,messages
-//STRUCTURE
-//PAYLOAD - on,off,high,moderate,low,alarm
-//COMM/GCS
-
-int one=101; int two=102  ; int three=103; int four=104; int five=105;
-int six=106; int seven=107; int eight=108; int nine=109;
-int A=1 ;int B=2 ;int C=3 ;int D=4 ;int E=5 ;int F=6 ;int G=7 ;int H=8 ;int I=9 ;int J=10;
-int K=11;int L=12;int M=13;int N=14;int O=15;int P=16;int Q=17;int R=18;int S=19;int T=20;
-int U=21;int V=22;int W=23;int X=24;int Y=25;int Z=26;int space=0; 
-
-
-
-int receive_binary [160];
-int receive_symbol [20 ];//20byte
-int transmit_binary[160];
-int transmit_symbol[20 ];//20byte
-//initialize
-for(int index=0;index<=159;index++){receive_binary [index]=0;}
-for(int index=0;index<=19 ;index++){receive_symbol [index]=0;}
-for(int index=0;index<=159;index++){transmit_binary[index]=0;}
-for(int index=0;index<=19 ;index++){transmit_symbol[index]=0;}
 
 int payload_status=0;
 int adcs_status=0;
