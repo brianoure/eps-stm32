@@ -1,7 +1,7 @@
 //Commands called by ASCII
 
 //hex=dec,cmd name, src, dest
-//0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT}or{NACK}
+//0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT EPS LIVE}or{NACK}
 //0x02=2 ,ACK  ,Acknowledge reply              ,ALL   ,Master, {ACK}//not applicable
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK GD SPC E6 IPC E6}or{NACK}
@@ -100,8 +100,8 @@ if(
 (receive_symbol[4]==space)&&(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)&&
 /*review TX ACTIVE*/
 ){//ping detected
-int response_array[]={A,C,K,space,A,F,D,E,V,S,A,T};
-for(int index=0;index<=11;index++){//for
+int response_array[]={A,C,K,space,A,F,D,E,V,S,A,T,space,E,P,S,space,L,I,V,E};
+for(int index=0;index<=20;index++){//for
 byte_transmit((response_array[index]));
 }//for
 }//ping detected
