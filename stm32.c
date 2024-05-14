@@ -4,7 +4,7 @@
 //0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT EPS LIVE}or{NACK}
 //0x02=2 ,ACK  ,Acknowledge reply              ,ALL   ,Master, {ACK}//not applicable
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
-//0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK GD SPC E6 IPC E6}or{NACK}
+//0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
 //0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC xxxxx yyyyy}->{EPS ACK PD xxxxx yyyyy}or{NACK}
 //0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK RD MASTER}
 //0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD MASTER}
@@ -25,6 +25,10 @@
 //OK
 int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
+
+//OK
+int dec_spc1=0;int dec_spc2=0;int dec_spc3=0;int dec_spc4=0;int dec_spc5=0;int dec_spc6=0;int dec_spc7=0;
+int dec_ipc1=0;int dec_ipc2=0;int dec_ipc3=0;int dec_ipc4=0;int dec_ipc5=0;int dec_ipc6=0;int dec_ipc7=0;
 
 //OK
 int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
@@ -110,18 +114,22 @@ return 0;
 }//ping check
 
 
-
+//OK
 int gd_check(){
 if(
 (receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&
 (receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&/*review TX ACTIVE*/
 ){//gd detected
-int response_array[]={E,P,S,space,A,C,K,space,G,D,space,S,P,C,space,E,6,space,I,P,C,space,E,6,space,M,A,S,T,E,R};
-for(int symbol_index=0;symbol_index<=30;symbol_index++){//for
-byte_transmit((response_array[symbol_index]));
+int response_array[]={A,C,K,space,
+                      S,P,C,space,
+                      dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
+                      I,P,C,space,
+                      dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7};
+for(int index=0;index<=26;index++){//for
+byte_transmit((response_array[index]));
 }//for
 }//gd detected
-else{if(/*review TX ACTIVE*/){nack_response();}}
+else{nack_response();}
 return 0;
 }
 
