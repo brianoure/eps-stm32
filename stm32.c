@@ -7,7 +7,7 @@
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
 //0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
-//0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK AFDEVSAT EPS KENYA SPACE AGENCY RD}or{NACK}
+//0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
 //0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD}}or{NACK}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}
 //0x0c=12,SOF  ,Switch OFF subsystem           ,Master,EPS   , {SOF PYLD}or{SOF ADCS}or{SOF GCS}
@@ -48,10 +48,10 @@ int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
 int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
-int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;
+int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;int hyphen=45;
 
 //OK.....data
-int eps_data[]={AFDEVSAT KENYA SPACE AGENCY EPS  aaaaaaa CURRENT USER aaaaaa};
+int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY,space,EPS};
 
 
 
@@ -205,7 +205,69 @@ return 0;
 }//pd_check
 
 
+//OK
+//{RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
+//int eps_data[100]={E,P,S,space,ACK,space,A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY}, default after powering up
+int rd_check(){
+if(
+(receive_symbol[0 ]==R)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
+(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)
+){//rd detected
+for(int index=0;index<=99;index++){
+  byte_transmit((eps_data[index]));
+}//for..transmit entire 100 byte array
+}//rd_detected
+else{nack_response();}
+return 0;
+}//rd_check
 
+int wd_check(){
+return 0;
+}//wd_check
+
+int son_check(){
+return 0;
+}//son_check
+
+int sof_check(){
+return 0;
+}//sof_check
+
+int sm_check(){
+return 0;
+}//sm_check
+
+int gm_check(){
+return 0;
+}//gm_check
+
+int gsc_check(){
+return 0;
+}//gsc_check
+
+int ssc_check(){
+return 0;
+}//ssc_check
+
+int gfp_check(){
+return 0;
+}//gfp_check
+
+int sfp_check(){
+return 0;
+}//sfp_check
+
+int fon_check(){
+return 0;
+}//fon_check
+
+int fof_check(){
+return 0;
+}//fof_check
+
+int gostm_check(){
+return 0;
+}//
 
 int ken_check(){
 if(
@@ -220,9 +282,6 @@ for(int symbol_index=0;symbol_index<=11;symbol_index++){//for
 else{if(/*review TX ACTIVE*/){nack_response();}}
 return 0;
 }
-
-
-
 
 
 int kdis_check(){
