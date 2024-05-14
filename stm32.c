@@ -85,8 +85,8 @@ return 0;
 int nack_response(){
 if(/*review TX ACTIVE*/){//if
  int response_array[]={N,A,C,K};
- for(int symbol_index=0;symbol_index<=3;symbol_index++){//for
-   byte_transmit(response_array[symbol_index]);
+ for(int index=0;index<=3;index++){//for
+   byte_transmit(response_array[index]);
  }//for
 }//if
 return 0;
@@ -102,7 +102,7 @@ if(
 ){//ping detected
 int response_array[]={A,C,K,space,A,F,D,E,V,S,A,T,space,E,P,S,space,L,I,V,E};
 for(int index=0;index<=20;index++){//for
-byte_transmit((response_array[index]));
+  byte_transmit((response_array[index]));
 }//for
 }//ping detected
 else{nack_response();}
