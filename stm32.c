@@ -1,7 +1,7 @@
 //Commands called by ASCII
 
 //hex=dec,cmd name, src, dest
-//0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT}or{NACK}
+//0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING}->{ACK AFDEVSAT}or{NACK}
 //0x02=2 ,ACK  ,Acknowledge reply              ,ALL   ,Master, {ACK}//not applicable
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK GD SPC E6 IPC E6}or{NACK}
