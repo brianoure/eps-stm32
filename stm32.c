@@ -28,6 +28,13 @@ int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
 //OK
+int payload_status=0;
+int adcs_status=0;
+int obc_status=0;
+int comm_status=0;
+int eps_status=0;
+
+//OK
 int dec_spc1=symbol_pause_count//1000000;
 int dec_spc2=symbol_pause_count//100000;
 int dec_spc3=symbol_pause_count//10000;
@@ -240,7 +247,17 @@ else{nack_response();}
 return 0;
 }//wd_check
 
+
+//{SON PYLD}or{SON ADCS}or{SON GCS}or{NACK}
 int son_check(){
+if(
+(receive_symbol[0 ]==S)&&(receive_symbol[1 ]==O)&&(receive_symbol[2 ]==N)&&(receive_symbol[3 ]==space)
+){//son detected
+if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[6 ]==D)){}//if son pyld
+if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[6 ]==S)){}//if son adcs
+if((receive_symbol[4 ]==G)&&(receive_symbol[5 ]==C)&&(receive_symbol[6 ]==S)){}//if son gcs
+}//son_detected
+else{nack_response();}
 return 0;
 }//son_check
 
