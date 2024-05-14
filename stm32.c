@@ -27,8 +27,20 @@ int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
 //OK
-int dec_spc1=0;int dec_spc2=0;int dec_spc3=0;int dec_spc4=0;int dec_spc5=0;int dec_spc6=0;int dec_spc7=0;
-int dec_ipc1=0;int dec_ipc2=0;int dec_ipc3=0;int dec_ipc4=0;int dec_ipc5=0;int dec_ipc6=0;int dec_ipc7=0;
+int dec_spc1=symbol_pause_count//1000000;
+int dec_spc2=symbol_pause_count//100000;
+int dec_spc3=symbol_pause_count//10000;
+int dec_spc4=symbol_pause_count//1000;
+int dec_spc5=symbol_pause_count//100;
+int dec_spc6=symbol_pause_count//10;
+int dec_spc7=symbol_pause_count;
+int dec_ipc1=intermission_pause_count//1000000;
+int dec_ipc2=intermission_pause_count//100000;
+int dec_ipc3=intermission_pause_count//10000;
+int dec_ipc4=intermission_pause_count//1000;
+int dec_ipc5=intermission_pause_count//100;
+int dec_ipc6=intermission_pause_count//10;
+int dec_ipc7=intermission_pause_count;
 
 //OK
 int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
@@ -126,7 +138,7 @@ int response_array[]={A,C,K,space,
                       I,P,C,space,
                       dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7};
 for(int index=0;index<=26;index++){//for
-byte_transmit((response_array[index]));
+  byte_transmit((response_array[index]));
 }//for
 }//gd detected
 else{nack_response();}
@@ -143,7 +155,7 @@ if(
 receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];receive_symbol[6];
 int response_array[31]={E,P,S,space,A,C,K,space,P,D,space,S,P,C,space,E,6,space,I,P,C,space,E,6,space,M,A,S,T,E,R};
 for(int symbol_index=0;symbol_index<=30;symbol_index++){//for
-byte_transmit((response_array[symbol_index]));
+  byte_transmit((response_array[symbol_index]));
 }//for
 }//pd detected
 else{if(/*review TX ACTIVE*/){nack_response();}}
@@ -162,7 +174,7 @@ if(
 /*review KDIS*/
 int response_array[12]={E,P,S,space,A,C,K,space,K,D,I,S};
 for(int symbol_index=0;symbol_index<=11;symbol_index++){//for
-byte_transmit((response_array[symbol_index]));
+  byte_transmit((response_array[symbol_index]));
 }//for
 }//kdis detected
 else{if(/*review TX ACTIVE*/){nack_response();}}
