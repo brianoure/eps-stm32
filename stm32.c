@@ -30,9 +30,9 @@ int intermission_pause_count=1000000;
 //OK
 int one=101; int two=102  ; int three=103; int four=104; int five=105;
 int six=106; int seven=107; int eight=108; int nine=109;
-int A=1 ;int B=2 ;int C=3 ;int D=4 ;int E=5 ;int F=6 ;int G=7 ;int H=8 ;int I=9 ;int J=10;
-int K=11;int L=12;int M=13;int N=14;int O=15;int P=16;int Q=17;int R=18;int S=19;int T=20;
-int U=21;int V=22;int W=23;int X=24;int Y=25;int Z=26;int space=0;
+int A=65 ;int B=66 ;int C=67 ;int D=68 ;int E=69 ;int F=70 ;int G=71 ;int H=72 ;int I=73 ;int J=74;
+int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
+int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;
 
 //OK
 int receive_binary [400];
