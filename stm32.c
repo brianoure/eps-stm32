@@ -7,8 +7,8 @@
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
 //0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
 //0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
-//0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK RD MASTER}
-//0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD MASTER}
+//0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK AFDEVSAT EPS KENYA SPACE AGENCY RD}or{NACK}
+//0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS}->{EPS ACK WD}}or{NACK}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}
 //0x0c=12,SOF  ,Switch OFF subsystem           ,Master,EPS   , {SOF PYLD}or{SOF ADCS}or{SOF GCS}
 //0x15=21,SM   ,Set subsystem Mode of operation,Master,ALL   , {SM xxx x}->{EPS ACK SM xxx y MASTER} xxx=subsyt, y=mode
@@ -23,7 +23,7 @@
 //0x31=49,KEN  ,Kill ENable                    ,GCS   ,EPS   , {KEN}  ->{ACK KEN} or{NACK}
 //0x32=50,KDIS ,Kill DISable                   ,GCS   ,EPS   , {KDIS} ->{ACK KDIS}or{NACK}
 
-//OK
+//OK....parameter
 int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
@@ -49,6 +49,11 @@ int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;
+
+//OK.....data
+int eps_data[]={AFDEVSAT KENYA SPACE AGENCY EPS  aaaaaaa CURRENT USER aaaaaa};
+
+
 
 //OK
 int ascii_to_dec(int x){
