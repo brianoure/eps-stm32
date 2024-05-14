@@ -104,8 +104,8 @@ if(
 (receive_symbol[4]==space)&&(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)&&
 /*review TX ACTIVE*/
 ){//ping detected
-int response_array[]={E,P,S,space,A,C,K,space,P,I,N,G,space,A,F,D,E,V,S,A,T,space,M,A,S,T,E,R};
-for(int index=0;index<=27;index++){//for
+int response_array[]={A,C,K,space,A,F,D,E,V,S,A,T};
+for(int index=0;index<=11;index++){//for
 byte_transmit((response_array[index]));
 }//for
 }//ping detected
