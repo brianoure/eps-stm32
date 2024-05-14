@@ -22,15 +22,14 @@
 //0x31=49,KEN  ,Kill ENable                    ,GCS   ,EPS   , {KEN}  ->{ACK KEN} or{NACK}
 //0x32=50,KDIS ,Kill DISable                   ,GCS   ,EPS   , {KDIS} ->{ACK KDIS}or{NACK}
 
-/********************************************/
 //OK
 int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
 //OK
-int zero= 48;int one=49; int two=50  ; int three=51; int four=52; int five=53;
-int six=54; int seven=55; int eight=56; int nine=57;
-int A=65 ;int B=66 ;int C=67 ;int D=68 ;int E=69 ;int F=70 ;int G=71 ;int H=72 ;int I=73 ;int J=74;
+int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
+int six =54; int seven=55; int eight=56; int nine=57;
+int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;
 
@@ -40,14 +39,12 @@ int receive_symbol [50 ];//50byte
 int transmit_binary[400];
 int transmit_symbol[50 ];//50byte
 
-
 //OK
 //initialize
 for(int index=0;index<=399;index++){receive_binary [index]=0;}
 for(int index=0;index<=49 ;index++){receive_symbol [index]=0;}
 for(int index=0;index<=399;index++){transmit_binary[index]=0;}
 for(int index=0;index<=49 ;index++){transmit_symbol[index]=0;}
-
 
 //OK
 int bit_transmit(int value){//bit_transmit
@@ -65,7 +62,6 @@ for(int i=0;i<=intermission_pause_count;i++){};//for intermission
 return 0;
 }//bit_transmit
 
-
 //OK
 int byte_transmit(int mybytenumber){
 for(int leftshift=7;leftshift>=0;leftshift--){
@@ -78,7 +74,7 @@ return 0;
 int receive_binary_to_receive_symbol(){
 for(int symbol_index=0;symbol_index<=49;symbol_index++){
   int sum=0;
-  for(int leftshift=7;leftshift>=0;leftshift--){sum=sum+(receive_binary[symbol*8]*((int)(1<<7)));}//for
+  for(int leftshift=7;leftshift>=0;leftshift--){sum=sum+(receive_binary[(symbol*8)+(7-leftshift)]*((int)(1<<leftshift)));}//for
   receive_symbol[symbol_index]=sum;
 }//for
 return 0;
