@@ -221,7 +221,19 @@ else{nack_response();}
 return 0;
 }//rd_check
 
+
+//OK
+//{WD EPS ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss}->{EPS ACK WD}}or{NACK}
 int wd_check(){
+if(
+(receive_symbol[0 ]==W)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
+(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)
+){//rd detected
+for(int index=0;index<=99;index++){
+  byte_transmit((eps_data[index]));
+}//for..transmit entire 100 byte array
+}//rd_detected
+else{nack_response();}
 return 0;
 }//wd_check
 
