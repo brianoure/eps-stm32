@@ -113,8 +113,8 @@ return 0;
 
 int gd_check(){
 if(
-(receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&(receive_symbol[3]==E)&&
-(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&/*review TX ACTIVE*/
+(receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&
+(receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&/*review TX ACTIVE*/
 ){//gd detected
 int response_array[]={E,P,S,space,A,C,K,space,G,D,space,S,P,C,space,E,6,space,I,P,C,space,E,6,space,M,A,S,T,E,R};
 for(int symbol_index=0;symbol_index<=30;symbol_index++){//for
