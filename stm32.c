@@ -264,11 +264,11 @@ int son_check(){
 if(
 (receive_symbol[0 ]==S)&&(receive_symbol[1 ]==O)&&(receive_symbol[2 ]==N)&&(receive_symbol[3 ]==space)
 ){//son detected
-  if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[6 ]==D)){
+  if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[7 ]==D)){
   /*review payload ON*/
   ack_response();
   }//if son pyld
-  if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[6 ]==S)){
+  if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[7 ]==S)){
   /*review adcs ON*/
   ack_response();
   }//if son adcs
@@ -287,11 +287,11 @@ int sof_check(){
 if(
 (receive_symbol[0 ]==S)&&(receive_symbol[1 ]==O)&&(receive_symbol[2 ]==F)&&(receive_symbol[3 ]==space)
 ){//son detected
-  if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[6 ]==D)){
+  if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[7 ]==D)){
   /*review payload OFF*/
   ack_response();
   }//if son pyld
-  if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[6 ]==S)){
+  if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[7 ]==S)){
   /*review adcs OFF*/
   ack_response();
   }//if son adcs
