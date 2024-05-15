@@ -284,9 +284,27 @@ return 0;
 //OK
 //{SOF PYLD}or{SOF ADCS}or{SOF GCS}->{ACK}or{NACK}
 int sof_check(){
+if(
+(receive_symbol[0 ]==S)&&(receive_symbol[1 ]==O)&&(receive_symbol[2 ]==F)&&(receive_symbol[3 ]==space)
+){//son detected
+  if((receive_symbol[4 ]==P)&&(receive_symbol[5 ]==Y)&&(receive_symbol[6 ]==L)&&(receive_symbol[6 ]==D)){
+  /*review payload OFF*/
+  ack_response();
+  }//if son pyld
+  if((receive_symbol[4 ]==A)&&(receive_symbol[5 ]==D)&&(receive_symbol[6 ]==C)&&(receive_symbol[6 ]==S)){
+  /*review adcs OFF*/
+  ack_response();
+  }//if son adcs
+  if((receive_symbol[4 ]==G)&&(receive_symbol[5 ]==C)&&(receive_symbol[6 ]==S)){
+  /*review gcs OFF*/
+  ack_response();
+  }//if son gcs
+}//son_detected
+else{nack_response();}
 return 0;
 }//sof_check
 
+//
 int sm_check(){
 return 0;
 }//sm_check
