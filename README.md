@@ -4,21 +4,21 @@ Microcontrolller 'OS' for a satellite's Electrical Power Subsystem
 
 # STM32L496VGTx series
 On the left is pin-label and the right is the corrresponding configuration
-PE2 O/P
-PE3 O/P
-PE4 O/P
-PC14 RCC_OSC32_IN 
-PC15 RCC_OSC32_OUT
-PH0 RCC_OSC_IN
-PH1 RCC_OSC_OUT
-PC0 I/P
-PC1 I/P
-PC2 I/P
-PC3 I/P
-VREF+ VREFBUF_OUT
-PA0 I/P
-PA1 I/P
-PA2 I/P
+PE2 O/P <br>
+PE3 O/P <br>
+PE4 O/P <br>
+PC14 RCC_OSC32_IN <br> 
+PC15 RCC_OSC32_OUT <br>
+PH0 RCC_OSC_IN <br>
+PH1 RCC_OSC_OUT <br>
+PC0 I/P <br>
+PC1 I/P <br>
+PC2 I/P <br>
+PC3 I/P <br>
+VREF+ VREFBUF_OUT <br>
+PA0 I/P <br>
+PA1 I/P <br>
+PA2 I/P <br>
 
 PA3 I/P
 PA4 I/P
