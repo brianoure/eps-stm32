@@ -339,25 +339,25 @@ int sm_ccu_active=(int)(
                   (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)
                   );
 int ssm_ccu_activestandby=(int)(
-                          sm_ccu_active&&
-                          (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
-                          );
+                  sm_ccu_active&&
+                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  );
 int sm_ccu_activebeacon=(int)(
-                        sm_ccu_active&&
-                        (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
-                        );
+                  sm_ccu_active&&
+                  (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
+                  );
 int sm_ccu_uhfcomm=(int)(
-                    sm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U)&&
-                    (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&
-                    (receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
-                    );
+                  sm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U)&&
+                  (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&
+                  (receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
+                  );
 int sm_deployfuse_active6s=(int)(
-                    sm&&(receive_symbol[2]==space)&&
-                    (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
-                    (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E)&&(receive_symbol[6]==space)&&
-                    (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
-                    (receive_symbol[2]=six)&&(receive_symbol[2]==S)
-                    );
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
+                  (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E)&&(receive_symbol[6]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
+                  (receive_symbol[2]=six)&&(receive_symbol[2]==S)
+                  );
 int sm_obc_active=(int)(
                   sm&&(receive_symbol[2]==space)&&
                   (receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C)&&(receive_symbol[2]==space)&&
@@ -422,7 +422,7 @@ int sm_payload_activepl=(int)(
                   (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
                   (receive_symbol[2]==P)&&(receive_symbol[2]==L)
                   );
-int sm_payload_activepl=(int)(
+int sm_payload_activeph=(int)(
                   sm&&(receive_symbol[2]==space)&&
                   (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
                   (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
@@ -436,18 +436,38 @@ int sm_payload_xband=(int)(
                   (receive_symbol[2]==X)&&(receive_symbol[2]==B)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)
                   );
 if(
-ssm_ccu_activestandby ||  sm_ccu_activebeacon || sm_ccu_uhfcomm || sm_deployfuse_active6s ||
-sm_obc_activestandby  || sm_obc_activebeacon  || sm_obc_uhfcomm || sm_adcs_detumble       ||
-sm_adcs_standby
+sm_ccu_activestandby     || sm_ccu_activebeacon  || sm_ccu_uhfcomm      || sm_deployfuse_active6s ||
+sm_obc_activestandby     || sm_obc_activebeacon  || sm_obc_uhfcomm      || sm_adcs_detumble       ||
+sm_adcs_standby          || sm_adcs_imagingnadir || sm_adcs_download    || sm_gps_active          || 
+sm_payload_active3camera || sm_payload_activepl  || sm_payload_activeph || sm_payload_xband
 ){//if
+if(sm_ccu_activestandby    ){}//if
+if(sm_ccu_activebeacon     ){}//if
+if(sm_ccu_uhfcomm          ){}//if
+if(sm_deployfuse_active6s  ){}//if
+if(sm_obc_activestandby    ){}//if
+ifsm_obc_activebeacon      ){}//if
+if(sm_obc_uhfcomm          ){}//if
+if(sm_adcs_standby         ){}//if
+if(sm_adcs_imagingnadir    ){}//if
+if(sm_adcs_download        ){}//if
+if(sm_gps_active           ){}//if
+if(sm_payload_active3camera){}//if
+if(sm_payload_activepl     ){}//if
+if(sm_payload_activeph     ){}//if
+if(sm_payload_xband        ){}//if
 }//if
 else{nack_response();}
 return 0;
 }//sm_check
 
+
+
 int gm_check(){
 return 0;
 }//gm_check
+
+
 
 int gsc_check(){
 return 0;
