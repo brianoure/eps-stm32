@@ -309,81 +309,137 @@ return 0;
 //{SM ssss mmmm}->{ACK}or{NACK} ssss=subsyt, mmmm=mode
 //Command   Subsystem    Modes             V    A
 //--------------------------------------------------
-//SM CCU ACTIVE-STANDBY 3V3  0A05
-//SM CCU ACTIVE-BEACON  3V3  1A5
-//SM CCU UHF-COMM       3V3  2A
+//SM CCU ACTIVESTANDBY 3V3  0A05
+//SM CCU ACTIVEBEACON  3V3  1A5
+//SM CCU UHFCOMM       3V3  2A
 //--------------------------------------------------
-//SM DEPLOYFUSE ACTIVE-6S  5V0  1A
+//SM DEPLOYFUSE ACTIVE6S  5V0  1A
 //-------------------------------------------------- 
-//OBC ACTIVE-STANDBY    3V3  0A1
-//OBC ACTIVE-BEACON     3V3  1A5
-//OBC UHF-COMM          3V3  2A0
+//SM OBC ACTIVESTANDBY 3V3  0A1
+//SM OBC ACTIVEBEACON  3V3  1A5
+//SM OBC UHFCOMM       3V3  2A0
 //-----------------------------------------
-//ADCS DETUMBLE          
-//ADCS STANDBY                     
-//ADCS IMAGING-NADIR            
-//ADCS DOWNLOAD                  
+//SM ADCS DETUMBLE          
+//SM ADCS STANDBY                     
+//SM ADCS IMAGINGNADIR            
+//SM ADCS DOWNLOAD                  
 //-----------------------------------------
-//GPS ACTIVE            5V0  0A6
+//SM GPS ACTIVE          5V0  0A6
 //-----------------------------------------
-//PAYLOAD ACTIVE-3CAMERA  5V0  0A94
-//PAYLOAD ACTIVE-PL       5V0  0A6
-//PAYLOAD ACTIVE-CH       5V0  0A6
-//PAYLOAD XBAND           12V0 0A92
+//SM PAYLOAD ACTIVE3CAMERA  5V0  0A94
+//SM PAYLOAD ACTIVEPL       5V0  0A6
+//SM PAYLOAD ACTIVECH       5V0  0A6
+//SM PAYLOAD XBAND          12V0 0A92
 //-----------------------------------------
 int sm_check(){
-int sm=((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int active       =((receive_symbol[0 ]==A)&&(receive_symbol[1]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E));
-int activestandby=(active&&(receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int activebeacon =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int active6s     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int uhfcomm      =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int detumble     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int standby      =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int imagingnadir =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int download     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int active3camera=((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int activepl     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int activech     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int xband        =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
-int command1 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command2 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command3 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command4 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command5 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command6 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command7 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command8 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command9 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command10=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command11=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command12=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command13=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command14=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command15=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
-int command16=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int sm=(int)((receive_symbol[0]==S)&&(receive_symbol[1]==M));
+int sm_ccu_active=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[3]==C)&&(receive_symbol[4]==C)&&(receive_symbol[5]==U)&&(receive_symbol[6]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  );
+int ssm_ccu_activestandby=(int)(
+                          sm_ccu_active&&
+                          (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                          );
+int sm_ccu_activebeacon=(int)(
+                        sm_ccu_active&&
+                        (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
+                        );
+int sm_ccu_uhfcomm=(int)(
+                    sm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U)&&
+                    (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&
+                    (receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
+                    );
+int sm_deployfuse_active6s=(int)(
+                    sm&&(receive_symbol[2]==space)&&
+                    (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
+                    (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E)&&(receive_symbol[6]==space)&&
+                    (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
+                    (receive_symbol[2]=six)&&(receive_symbol[2]==S)
+                    );
+int sm_obc_active=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  );
+int sm_obc_activestandby=(int)(
+                  sm_obc_active&&
+                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  );
+int sm_obc_activebeacon=(int)(
+                  sm_obc_active&&
+                  (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
+                  );
+int sm_obc_uhfcomm=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
+                  );
+int sm_adcs_detumble=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&
+                  (receive_symbol[2]==T)&&(receive_symbol[2]==U)&&(receive_symbol[2]==M)&&(receive_symbol[2]==B)&&(receive_symbol[2]==L)&&(receive_symbol[2]==E)
+                  );
+int sm_adcs_standby=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&
+                  (receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  );
+int sm_adcs_imagingnadir=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==I)&&(receive_symbol[2]==M)&&(receive_symbol[2]==A)&&(receive_symbol[2]==G)&&(receive_symbol[2]==I)&&
+                  (receive_symbol[2]==N)&&(receive_symbol[2]==G)&&(receive_symbol[2]==N)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&
+                  (receive_symbol[2]==I)&&(receive_symbol[2]==R)
+                  );
+int sm_adcs_download=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==D)&&(receive_symbol[2]==O)&&(receive_symbol[2]==W)&&(receive_symbol[2]==N)&&
+                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)
+                  );
+int sm_gps_active=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==G)&&(receive_symbol[2]==P)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&
+                  (receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  );
+
+int sm_payload_active3camera=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
+                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
+                  (receive_symbol[2]==three)&&(receive_symbol[2]==C)&&(receive_symbol[2]==A)&&(receive_symbol[2]==M)&&(receive_symbol[2]==E)&&(receive_symbol[2]==R)&&(receive_symbol[2]==A)
+                  );
+int sm_payload_activepl=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
+                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
+                  (receive_symbol[2]==P)&&(receive_symbol[2]==L)
+                  );
+int sm_payload_activepl=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
+                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
+                  (receive_symbol[2]==C)&&(receive_symbol[2]==H)
+                  );
+int sm_payload_xband=(int)(
+                  sm&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
+                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
+                  (receive_symbol[2]==X)&&(receive_symbol[2]==B)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)
+                  );
 if(
-  (receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)&&
-  (
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )||
-   (     )
-  )
-  ){
-  if((receive_symbol[3]==S)&&(receive_symbol[4]==M)&&(receive_symbol[5]==space)&&(receive_symbol[6]==space)){}//
+ssm_ccu_activestandby ||  sm_ccu_activebeacon || sm_ccu_uhfcomm || sm_deployfuse_active6s ||
+sm_obc_activestandby  || sm_obc_activebeacon  || sm_obc_uhfcomm || sm_adcs_detumble       ||
+sm_adcs_standby
+){//if
 }//if
 else{nack_response();}
 return 0;
