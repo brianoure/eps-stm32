@@ -11,7 +11,7 @@
 //0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss}->{EPS ACK WD}}or{NACK}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}->{ACK}or{NACK}
 //0x0c=12,SOF  ,Switch OFF subsystem           ,Master,EPS   , {SOF PYLD}or{SOF ADCS}or{SOF GCS}->{ACK}or{NACK}
-//0x15=21,SM   ,Set subsystem Mode of operation,Master,ALL   , {SM xxx x}->{EPS ACK SM xxx y MASTER} xxx=subsyt, y=mode
+//0x15=21,SM   ,Set subsystem Mode of operation,Master,ALL   , {SM ssss mmmm}->{ACK}or{NACK} ssss=subsyt, mmmm=mode
 //0x16=22,GM   ,Get subsystem Mode of operation,Master,ALL   , {GM PYLD x}->{EPS ACK GM PYLD x MASTER},{GM ADCS x},{GM GCS x}
 //0x17=23,GSC  ,Get Synch Counter value        ,Master,ALL   , {GSC}->{EPS ACK GSC EPS MASTER}->{}->{END}
 //0x18=24,SSC  ,Set Synch Counter value        ,Master,ALL   , {SSC pppp}->{EPS ACK SSC pppp MASTER END} or {EPS NACK SSC pppp}
@@ -304,8 +304,88 @@ else{nack_response();}
 return 0;
 }//sof_check
 
-//
+
+//OK
+//{SM ssss mmmm}->{ACK}or{NACK} ssss=subsyt, mmmm=mode
+//Command   Subsystem    Modes             V    A
+//--------------------------------------------------
+//SM CCU ACTIVE-STANDBY 3V3  0A05
+//SM CCU ACTIVE-BEACON  3V3  1A5
+//SM CCU UHF-COMM       3V3  2A
+//--------------------------------------------------
+//SM DEPLOYFUSE ACTIVE-6S  5V0  1A
+//-------------------------------------------------- 
+//OBC ACTIVE-STANDBY    3V3  0A1
+//OBC ACTIVE-BEACON     3V3  1A5
+//OBC UHF-COMM          3V3  2A0
+//-----------------------------------------
+//ADCS DETUMBLE          
+//ADCS STANDBY                     
+//ADCS IMAGING-NADIR            
+//ADCS DOWNLOAD                  
+//-----------------------------------------
+//GPS ACTIVE            5V0  0A6
+//-----------------------------------------
+//PAYLOAD ACTIVE-3CAMERA  5V0  0A94
+//PAYLOAD ACTIVE-PL       5V0  0A6
+//PAYLOAD ACTIVE-CH       5V0  0A6
+//PAYLOAD XBAND           12V0 0A92
+//-----------------------------------------
 int sm_check(){
+int sm=((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int active       =((receive_symbol[0 ]==A)&&(receive_symbol[1]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E));
+int activestandby=(active&&(receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int activebeacon =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int active6s     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int uhfcomm      =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int detumble     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int standby      =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int imagingnadir =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int download     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int active3camera=((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int activepl     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int activech     =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int xband        =((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space));
+int command1 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command2 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command3 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command4 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command5 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command6 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command7 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command8 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command9 =(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command10=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command11=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command12=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command13=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command14=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command15=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+int command16=(int)(sm&&((receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)));
+if(
+  (receive_symbol[0 ]==S)&&(receive_symbol[1]==M)&&(receive_symbol[2]==space)&&
+  (
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )||
+   (     )
+  )
+  ){
+  if((receive_symbol[3]==S)&&(receive_symbol[4]==M)&&(receive_symbol[5]==space)&&(receive_symbol[6]==space)){}//
+}//if
+else{nack_response();}
 return 0;
 }//sm_check
 
