@@ -441,21 +441,21 @@ sm_obc_activestandby     || sm_obc_activebeacon  || sm_obc_uhfcomm      || sm_ad
 sm_adcs_standby          || sm_adcs_imagingnadir || sm_adcs_download    || sm_gps_active          || 
 sm_payload_active3camera || sm_payload_activepl  || sm_payload_activeph || sm_payload_xband
 ){//if
-if(sm_ccu_activestandby    ){}//if
-if(sm_ccu_activebeacon     ){}//if
-if(sm_ccu_uhfcomm          ){}//if
-if(sm_deployfuse_active6s  ){}//if
-if(sm_obc_activestandby    ){}//if
-ifsm_obc_activebeacon      ){}//if
-if(sm_obc_uhfcomm          ){}//if
-if(sm_adcs_standby         ){}//if
-if(sm_adcs_imagingnadir    ){}//if
-if(sm_adcs_download        ){}//if
-if(sm_gps_active           ){}//if
-if(sm_payload_active3camera){}//if
-if(sm_payload_activepl     ){}//if
-if(sm_payload_activeph     ){}//if
-if(sm_payload_xband        ){}//if
+if(sm_ccu_activestandby    ){/*review*/;ack_response();}//if
+if(sm_ccu_activebeacon     ){/*review*/;ack_response();}//if
+if(sm_ccu_uhfcomm          ){/*review*/;ack_response();}//if
+if(sm_deployfuse_active6s  ){/*review*/;ack_response();}//if
+if(sm_obc_activestandby    ){/*review*/;ack_response();}//if
+ifsm_obc_activebeacon      ){/*review*/;ack_response();}//if
+if(sm_obc_uhfcomm          ){/*review*/;ack_response();}//if
+if(sm_adcs_standby         ){/*review*/;ack_response();}//if
+if(sm_adcs_imagingnadir    ){/*review*/;ack_response();}//if
+if(sm_adcs_download        ){/*review*/;ack_response();}//if
+if(sm_gps_active           ){/*review*/;ack_response();}//if
+if(sm_payload_active3camera){/*review*/;ack_response();}//if
+if(sm_payload_activepl     ){/*review*/;ack_response();}//if
+if(sm_payload_activeph     ){/*review*/;ack_response();}//if
+if(sm_payload_xband        ){/*review*/;ack_response();}//if
 }//if
 else{nack_response();}
 return 0;
