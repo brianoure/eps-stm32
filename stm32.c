@@ -498,50 +498,35 @@ int mode_payload_activepl;
 int mode_payload_activeph;
 int mode_payload_xband;
 if(gm_ccu)|| gm_deployfuse || gm_obc || gm_adcs || gm_gps || gm_payload ){
-ack_response();
+ack_response();byte_transmit(space);
 if(gm_ccu       ){
-  /*review*/
   if(mode_ccu_activestandby){
-    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
-    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);byte_transmit(S);byte_transmit(T);byte_transmit(A);byte_transmit(N);byte_transmit(D);
-    byte_transmit(B);byte_transmit(Y);
+    int response[]={M,O,D,E,space,C,C,U,space,A,C,T,I,V,E,S,T,A,N,D,B,Y};for(int index=0;index<=21;index++){byte_transmit(response[index]);}
   }
   if(mode_ccu_activebeacon ){
-    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
-    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);
-    byte_transmit(B);byte_transmit(E);byte_transmit(A);byte_transmit(C);byte_transmit(O);byte_transmit(N);
+    int response[]={M,O,D,E,space,C,C,U,space,A,C,T,I,V,E,B,E,A,C,O,N};for(int index=0;index<=20;index++){byte_transmit(response[index]);}
   }
   if(mode_ccu_uhfcomm      ){
-    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
-    byte_transmit(U);byte_transmit(H);byte_transmit(F);byte_transmit(C);byte_transmit(O);byte_transmit(M);byte_transmit(M);
+    int response[]={C,C,U,space,U,H,F,C,O,M,M};for(int index=0;index<=10;index++){byte_transmit(response[index]);}
   }
 }//if
 if(gm_deployfuse){
-  /*review*/
   if(mode_deployfuse_active6s){
-    byte_transmit(F);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);
-    byte_transmit(D);byte_transmit(E);byte_transmit(P);byte_transmit(L);byte_transmit(O);byte_transmit(Y);byte_transmit(E);byte_transmit(D);
+    int response[]={F,U,S,E,space,D,E,P,L,O,Y,E,D};for(int index=0;index<=12;index++){byte_transmit(response[index]);}
   }
 }//if
 if(gm_obc       ){
-  /*review*/
   if(mode_obc_activestandby){
-    byte_transmit(O);byte_transmit(B);byte_transmit(C);byte_transmit(space);
-    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);byte_transmit(S);byte_transmit(T);byte_transmit(A);byte_transmit(N);byte_transmit(D);
-    byte_transmit(B);byte_transmit(Y);
+    int response[]={M,O,D,E,space,O,B,C,space,A,C,T,I,V,E,S,T,A,N,D,B,Y};for(int index=0;index<=21;index++){byte_transmit(response[index]);}
   }
   if(mode_obc_activebeacon ){
-    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
-    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);
-    byte_transmit(B);byte_transmit(E);byte_transmit(A);byte_transmit(C);byte_transmit(O);byte_transmit(N);
+    int response[]={M,O,D,E,space,O,B,C,space,A,C,T,I,V,E,B,E,A,C,O,N};for(int index=0;index<=20;index++){byte_transmit(response[index]);}
   }
   if(mode_obc_uhfcomm      ){
-    byte_transmit(O);byte_transmit(B);byte_transmit(C);byte_transmit(space);
-    byte_transmit(U);byte_transmit(H);byte_transmit(F);byte_transmit(C);byte_transmit(O);byte_transmit(M);byte_transmit(M);
+    int response[]={M,O,D,E,space,O,B,C,U,H,F,C,O,M,M};for(int index=0;index<=15;index++){byte_transmit(response[index]);}
   }
 }//if
 if(gm_adcs      ){
-  /*review*/
   if(mode_adcs_standby     ){
     int response[]={A,D,C,S,space,S,T,A,N,D,B,Y};for(int index=0;index<=11;index++){byte_transmit(response[index]);}
   }
@@ -553,7 +538,6 @@ if(gm_adcs      ){
   }
 }//if
 if(gm_gps       ){
-  /*review*/
   if(mode_gps_active       ){
      int response[]={G,P,S,space,A,C,T,I,V,E};for(int index=0;index<=9;index++){byte_transmit(response[index]);}
   }
