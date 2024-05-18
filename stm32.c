@@ -462,7 +462,12 @@ return 0;
 }//sm_check
 
 
-
+//GM CCU
+//GM DEPLOYFUSE
+//GM OBC
+//GM ADCS
+//GM GPS
+//GM PAYLOAD
 int gm_check(){
 return 0;
 }//gm_check
