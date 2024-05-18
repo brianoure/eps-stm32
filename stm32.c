@@ -625,13 +625,7 @@ return 0;
 
 
 
-
-
-
-
-
 /*******************************************/
-
 int payload_status=0;
 int adcs_status=0;
 int obc_status=0;
@@ -657,28 +651,6 @@ if((receive_symbol[0]== )&&(receive_symbol[1]== )&&(receive_symbol[2]== )&&(rece
 return 0;
 }//executeframe
 
-int transmitstatusbit(int transmission_bit_position){
-//response
-int response[20]={,,,,,,,,,,,,,,,,,,,};
-if(payload_status==){response[]=;response[]=;}
-if(payload_status==){response[]=;response[]=;}
-if(payload_status==){response[]=;response[]=;}
-if(   adcs_status==){response[]=;response[]=;}
-if(   adcs_status==){response[]=;response[]=;}
-if(   adcs_status==){response[]=;response[]=;}
-if(   comm_status==){response[]=;response[]=;}
-if(   comm_status==){response[]=;response[]=;}
-if(   comm_status==){response[]=;response[]=;}
-if(    obc_status==){response[]=;response[]=;}
-if(    obc_status==){response[]=;response[]=;}
-if(    obc_status==){response[]=;response[]=;}
-if(    eps_status==){response[]=;response[]=;}
-if(    eps_status==){response[]=;response[]=;}
-if(    eps_status==){response[]=;response[]=;}
-int result=((response[(transmission_bit_position//8)])&(1<<(7-(transmission_bit_position%8))));
-TXA(result);TXB(!result);TXC(result);TXD(!result);
-return 0;
-}//transmitstatusbit
 
 int shiftleftstore(int value){
 for(int index=0;index<=158;index++){receive[index]=receive[index+1];};
@@ -693,10 +665,6 @@ int skip=0;
 if(skip==0,RXA()==, RXB()==, RXC()==){shiftleftstore(0);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
 if(skip==0,RXA()==, RXB()==, RXC()==){shiftleftstore(1);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
 if(skip==0,RXA()==, RXB()==, RXC()==){                                 while(RXA()==, RXB()==, RXC()==);skip=1;}/*intermission*/
-//transmit raw binary
-if( transmit_bit_position   ==320){transmit_bit_position=0;}
-if((transmit_bit_position%2)==0  ){transmitstatusbit(transmit_bit_position/2);/*actual*/}else{TXA();TXB();TXC();TXD();/*intermission*/}
-transmit_bit_position=transmit_bit_position+1;
 }//while
 }//main
 
