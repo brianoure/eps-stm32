@@ -553,7 +553,7 @@ if(gm_payload   ){
     int response[]={P,A,Y,L,O,A,D,space,A,C,T,I,V,E,P,H};for(int index=0;index<=15;index++){byte_transmit(response[index]);}
   }
   if(mode_payload_xband        ){
-    int response[]={P,A,Y,L,O,A,D,space,XBAND};for(int index=0;index<=12;index++){byte_transmit(response[index]);}
+    int response[]={P,A,Y,L,O,A,D,space,X,B,A,N,D};for(int index=0;index<=12;index++){byte_transmit(response[index]);}
   }
 }//if
 }//if
