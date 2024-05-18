@@ -34,23 +34,6 @@ int adcs_status=0;
 int comm_status=0;
 //int eps_status=0;
 
-//MODES
-int mode_ccu_activestandby    ;
-int mode_ccu_activebeacon     ;
-int mode_ccu_uhfcomm          ;
-int mode_deployfuse_active6s  ;
-int mode_obc_activestandby    ;
-int mode_obc_activebeacon     ;
-int mode_obc_uhfcomm          ;
-int mode_adcs_standby         ;
-int mode_adcs_imagingnadir    ;
-int mode_adcs_download        ;
-int mode_gps_active           ;
-int mode_payload_active3camera;
-int mode_payload_activepl     ;
-int mode_payload_activeph     ;
-int mode_payload_xband        ;
-
 //OK
 int dec_spc1=symbol_pause_count//1000000;
 int dec_spc2=symbol_pause_count//100000;
