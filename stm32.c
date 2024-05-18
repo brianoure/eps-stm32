@@ -462,13 +462,36 @@ return 0;
 }//sm_check
 
 
-//GM CCU
-//GM DEPLOYFUSE
-//GM OBC
-//GM ADCS
-//GM GPS
-//GM PAYLOAD
+//GM CCU        -> 
+//GM DEPLOYFUSE ->
+//GM OBC        ->
+//GM ADCS       ->
+//GM GPS        ->
+//GM PAYLOAD    ->
 int gm_check(){
+int gm=(int)(gm&&(receive_symbol[2]==G)&&(receive_symbol[2]==M));
+int gm_ccu=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U));
+int gm_deployfuse=(int)(
+       gm&&(receive_symbol[2]==space)&&
+       (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
+       (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E));
+int gm_obc=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C));
+int gm_adcs=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S));
+int gm_gps=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==G)&&(receive_symbol[2]==P)&&(receive_symbol[2]==S));
+int gm_payload=(int)(
+       gm&&(receive_symbol[2]==space)&&
+       (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D));
+if(gm_ccu)|| gm_deployfuse || gm_obc || gm_adcs || gm_gps || gm_payload ){
+if(gm_ccu       ){/*review*/}//if
+if(gm_deployfuse){/*review*/}//if
+if(gm_deployfuse){/*review*/}//if
+if(gm_obc       ){/*review*/}//if
+if(gm_adcs      ){/*review*/}//if
+if(gm_gps       ){/*review*/}//if
+if(gm_payload   ){/*review*/}//if
+ack_response();
+}//if
+else{nack_response();}
 return 0;
 }//gm_check
 
