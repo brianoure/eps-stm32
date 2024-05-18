@@ -498,45 +498,97 @@ int gm_gps=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==G)&&(receiv
 int gm_payload=(int)(
        gm&&(receive_symbol[2]==space)&&
        (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D));
+/*review*/
+int mode_ccu_activestandby;
+int mode_ccu_activebeacon;
+int mode_ccu_uhfcomm;
+int mode_deployfuse_active6s;
+int mode_obc_activestandby;
+int mode_obc_activebeacon;
+int mode_obc_uhfcomm;
+int mode_adcs_standby;
+int mode_adcs_imagingnadir;
+int mode_adcs_download;
+int mode_gps_active;
+int mode_payload_active3camera;
+int mode_payload_activepl;
+int mode_payload_activeph;
+int mode_payload_xband;
 if(gm_ccu)|| gm_deployfuse || gm_obc || gm_adcs || gm_gps || gm_payload ){
+ack_response();
 if(gm_ccu       ){
   /*review*/
   if(mode_ccu_activestandby){
     byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
-    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(V);byte_transmit(E);byte_transmit(S);byte_transmit(T);byte_transmit(A);byte_transmit(N);byte_transmit(D);
+    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);byte_transmit(S);byte_transmit(T);byte_transmit(A);byte_transmit(N);byte_transmit(D);
     byte_transmit(B);byte_transmit(Y);
   }
-  if(mode_ccu_activebeacon ){}
-  if(mode_ccu_uhfcomm      ){}
+  if(mode_ccu_activebeacon ){
+    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
+    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);
+    byte_transmit(B);byte_transmit(E);byte_transmit(A);byte_transmit(C);byte_transmit(O);byte_transmit(N);
+  }
+  if(mode_ccu_uhfcomm      ){
+    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
+    byte_transmit(U);byte_transmit(H);byte_transmit(F);byte_transmit(C);byte_transmit(O);byte_transmit(M);byte_transmit(M);
+  }
 }//if
 if(gm_deployfuse){
   /*review*/
-  if(mode_deployfuse_active6s){}
+  if(mode_deployfuse_active6s){
+    byte_transmit(F);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);
+    byte_transmit(D);byte_transmit(E);byte_transmit(P);byte_transmit(L);byte_transmit(O);byte_transmit(Y);byte_transmit(E);byte_transmit(D);
+  }
 }//if
 if(gm_obc       ){
   /*review*/
-  if(mode_obc_activestandby){}
-  if(mode_obc_activebeacon ){}
-  if(mode_obc_uhfcomm      ){}
+  if(mode_obc_activestandby){
+    byte_transmit(O);byte_transmit(B);byte_transmit(C);byte_transmit(space);
+    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);byte_transmit(S);byte_transmit(T);byte_transmit(A);byte_transmit(N);byte_transmit(D);
+    byte_transmit(B);byte_transmit(Y);
+  }
+  if(mode_obc_activebeacon ){
+    byte_transmit(C);byte_transmit(C);byte_transmit(U);byte_transmit(space);
+    byte_transmit(A);byte_transmit(C);byte_transmit(T);byte_transmit(I);byte_transmit(V);byte_transmit(E);
+    byte_transmit(B);byte_transmit(E);byte_transmit(A);byte_transmit(C);byte_transmit(O);byte_transmit(N);
+  }
+  if(mode_obc_uhfcomm      ){
+    byte_transmit(O);byte_transmit(B);byte_transmit(C);byte_transmit(space);
+    byte_transmit(U);byte_transmit(H);byte_transmit(F);byte_transmit(C);byte_transmit(O);byte_transmit(M);byte_transmit(M);
+  }
 }//if
 if(gm_adcs      ){
   /*review*/
-  if(mode_adcs_standby     ){}
-  if(mode_adcs_imagingnadir){}
-  if(mode_adcs_download    ){}
+  if(mode_adcs_standby     ){
+    int response[]={A,D,C,S,space,S,T,A,N,D,B,Y};for(int index=0;index<=11;index++){byte_transmit(response[index]);}
+  }
+  if(mode_adcs_imagingnadir){
+    int response[]={A,D,C,S,space,I,M,A,G,I,N,G,N,A,D,I,R};for(int index=0;index<=16;index++){byte_transmit(response[index]);}
+  }
+  if(mode_adcs_download    ){
+    int response[]={A,D,C,S,space,D,O,W,N,L,O,A,D};for(int index=0;index<=12;index++){byte_transmit(response[index]);}
+  }
 }//if
 if(gm_gps       ){
   /*review*/
-  if(mode_gps_active       ){}
+  if(mode_gps_active       ){
+     int response[]={G,P,S,space,A,C,T,I,V,E};for(int index=0;index<=9;index++){byte_transmit(response[index]);}
+  }
 }//if
 if(gm_payload   ){
-  /*review*/
-  if(mode_payload_active3camera){}
-  if(mode_payload_activepl     ){}
-  if(mode_payload_activeph     ){}
-  if(mode_payload_xband        ){}
+  if(mode_payload_active3camera){
+    int response[]={P,A,Y,L,O,A,D,space,A,C,T,I,V,E,3,C,A,M,E,R,A};for(int index=0;index<=20;index++){byte_transmit(response[index]);}
+  }
+  if(mode_payload_activepl     ){
+    int response[]={P,A,Y,L,O,A,D,space,A,C,T,I,V,E,P,L};for(int index=0;index<=15;index++){byte_transmit(response[index]);}
+  }
+  if(mode_payload_activeph     ){
+    int response[]={P,A,Y,L,O,A,D,space,A,C,T,I,V,E,P,H};for(int index=0;index<=15;index++){byte_transmit(response[index]);}
+  }
+  if(mode_payload_xband        ){
+    int response[]={P,A,Y,L,O,A,D,space,XBAND};for(int index=0;index<=12;index++){byte_transmit(response[index]);}
+  }
 }//if
-ack_response();
 }//if
 else{nack_response();}
 return 0;
