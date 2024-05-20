@@ -361,80 +361,77 @@ int sm_deployfuse_active6s=(int)(
                   );
 int sm_obc_active=(int)(
                   sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  (receive_symbol[3]==O)&&(receive_symbol[4]==B)&&(receive_symbol[5]==C)&&(receive_symbol[6]==space)&&
+                  (receive_symbol[7]==A)&&(receive_symbol[8]==C)&&(receive_symbol[9]==T)&&(receive_symbol[10]==I)&&(receive_symbol[11]==V)&&(receive_symbol[12]==E)
                   );
 int sm_obc_activestandby=(int)(
                   sm_obc_active&&
-                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  (receive_symbol[13]==S)&&(receive_symbol[14]==T)&&(receive_symbol[15]==A)&&(receive_symbol[16]==N)&&(receive_symbol[17]==D)&&
+                  (receive_symbol[18]==B)&&(receive_symbol[19]==Y)
                   );
 int sm_obc_activebeacon=(int)(
                   sm_obc_active&&
-                  (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
+                  (receive_symbol[13]==B)&&(receive_symbol[14]==E)&&(receive_symbol[15]==A)&&(receive_symbol[16]==C)&&(receive_symbol[17]==O)&&(receive_symbol[18]==N)
                   );
 int sm_obc_uhfcomm=(int)(
                   sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
+                  (receive_symbol[3]==O)&&(receive_symbol[4]==B)&&(receive_symbol[5]==C)&&(receive_symbol[6]==space)&&
+                  (receive_symbol[7]==U)&&(receive_symbol[8]==H)&&(receive_symbol[9]==F)&&(receive_symbol[10]==C)&&(receive_symbol[11]==O)&&(receive_symbol[12]==M)&&(receive_symbol[13]==M)
+                  );
+int sm_adcs       =(int)(
+                  sm&&(receive_symbol[2]==space)&&(receive_symbol[3]==A)&&(receive_symbol[4]==D)&&(receive_symbol[5]==C)&&(receive_symbol[6]==S)
                   );
 int sm_adcs_detumble=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&
-                  (receive_symbol[2]==T)&&(receive_symbol[2]==U)&&(receive_symbol[2]==M)&&(receive_symbol[2]==B)&&(receive_symbol[2]==L)&&(receive_symbol[2]==E)
+                  sm_adcs&&(receive_symbol[7]==space)&&
+                  (receive_symbol[8]==D)&&(receive_symbol[9]==E)&&
+                  (receive_symbol[10]==T)&&(receive_symbol[11]==U)&&(receive_symbol[12]==M)&&(receive_symbol[13]==B)&&(receive_symbol[14]==L)&&(receive_symbol[15]==E)
                   );
 int sm_adcs_standby=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&
-                  (receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  sm_adcs&&(receive_symbol[7]==space)&&
+                  (receive_symbol[8]==S)&&(receive_symbol[9]==T)&&(receive_symbol[10]==A)&&(receive_symbol[11]==N)&&(receive_symbol[12]==D)&&
+                  (receive_symbol[13]==B)&&(receive_symbol[14]==Y)
                   );
 int sm_adcs_imagingnadir=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==I)&&(receive_symbol[2]==M)&&(receive_symbol[2]==A)&&(receive_symbol[2]==G)&&(receive_symbol[2]==I)&&
-                  (receive_symbol[2]==N)&&(receive_symbol[2]==G)&&(receive_symbol[2]==N)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&
-                  (receive_symbol[2]==I)&&(receive_symbol[2]==R)
+                  sm_adcs&&(receive_symbol[7]==space)&&
+                  (receive_symbol[8]==I)&&(receive_symbol[9]==M)&&(receive_symbol[10]==A)&&(receive_symbol[11]==G)&&(receive_symbol[12]==I)&&
+                  (receive_symbol[13]==N)&&(receive_symbol[14]==G)&&(receive_symbol[15]==N)&&(receive_symbol[16]==A)&&(receive_symbol[17]==D)&&
+                  (receive_symbol[18]==I)&&(receive_symbol[19]==R)
                   );
 int sm_adcs_download=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==D)&&(receive_symbol[2]==O)&&(receive_symbol[2]==W)&&(receive_symbol[2]==N)&&
-                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)
+                  sm_adcs&&(receive_symbol[7]==space)&&
+                  (receive_symbol[8]==D)&&(receive_symbol[9]==O)&&(receive_symbol[10]==W)&&(receive_symbol[11]==N)&&
+                  (receive_symbol[12]==L)&&(receive_symbol[13]==O)&&(receive_symbol[14]==A)&&(receive_symbol[15]==D)
                   );
 int sm_gps_active=(int)(
                   sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==G)&&(receive_symbol[2]==P)&&(receive_symbol[2]==S)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&
-                  (receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  (receive_symbol[3]==G)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&(receive_symbol[6]==space)&&
+                  (receive_symbol[7]==A)&&(receive_symbol[8]==C)&&(receive_symbol[9]==T)&&(receive_symbol[10]==I)&&
+                  (receive_symbol[11]==V)&&(receive_symbol[12]==E)
                   );
-
-int sm_payload_active3camera=(int)(
+int sm_payload=(int)(
                   sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
-                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
-                  (receive_symbol[2]==three)&&(receive_symbol[2]==C)&&(receive_symbol[2]==A)&&(receive_symbol[2]==M)&&(receive_symbol[2]==E)&&(receive_symbol[2]==R)&&(receive_symbol[2]==A)
+                  (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==Y)&&
+                  (receive_symbol[6]==L)&&(receive_symbol[7]==O)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)
+                  );
+int sm_payload_active3camera=(int)(
+                  sm_payload&&(receive_symbol[10]==space)&&
+                  (receive_symbol[11]==A)&&(receive_symbol[12]==C)&&(receive_symbol[13]==T)&&(receive_symbol[14]==I)&&(receive_symbol[15]==V)&&(receive_symbol[16]==E)&&
+                  (receive_symbol[17]==three)&&(receive_symbol[18]==C)&&(receive_symbol[19]==A)&&(receive_symbol[20]==M)&&
+                  (receive_symbol[21]==E)&&(receive_symbol[22]==R)&&(receive_symbol[23]==A)
                   );
 int sm_payload_activepl=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
-                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
-                  (receive_symbol[2]==P)&&(receive_symbol[2]==L)
+                  sm_payload&&(receive_symbol[10]==space)&&
+                  (receive_symbol[11]==A)&&(receive_symbol[12]==C)&&(receive_symbol[13]==T)&&(receive_symbol[14]==I)&&(receive_symbol[15]==V)&&(receive_symbol[16]==E)&&
+                  (receive_symbol[17]==P)&&(receive_symbol[18]==L)
                   );
 int sm_payload_activeph=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
-                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
-                  (receive_symbol[2]==C)&&(receive_symbol[2]==H)
+                  sm_payload&&(receive_symbol[10]==space)&&
+                  (receive_symbol[11]==A)&&(receive_symbol[12]==C)&&(receive_symbol[13]==T)&&(receive_symbol[14]==I)&&(receive_symbol[15]==V)&&(receive_symbol[16]==E)&&
+                  (receive_symbol[17]==P)&&(receive_symbol[18]==H)
                   );
 int sm_payload_xband=(int)(
-                  sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&
-                  (receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==X)&&(receive_symbol[2]==B)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)
+                  sm_payload&&(receive_symbol[10]==space)&&
+                  (receive_symbol[11]==X)&&(receive_symbol[12]==B)&&(receive_symbol[13]==A)&&(receive_symbol[14]==N)&&(receive_symbol[15]==D)
                   );
 if(
 sm_ccu_activestandby     || sm_ccu_activebeacon  || sm_ccu_uhfcomm      || sm_deployfuse_active6s ||
