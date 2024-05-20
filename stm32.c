@@ -659,7 +659,7 @@ return 0;
 
 
 
-
+//OK
 //SSC hhhhhhhhhhhhhhhh END
 int ssc_check(){
 if(
@@ -680,7 +680,16 @@ else{nack_response();}//else
 return 0;
 }//ssc_check
 
+
+
+//GFP ADCS -> ACK
+//GFP ACK
 int gfp_check(){
+if(
+(receive_symbol[0 ]==G)&&(receive_symbol[1 ]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3]==space)&&
+(receive_symbol[21]==E)&&(receive_symbol[22]==N)&&(receive_symbol[23]==D)
+){}//if
+else{nack_response();}
 return 0;
 }//gfp_check
 
@@ -696,6 +705,14 @@ int fof_check(){
 return 0;
 }//fof_check
 
+//GOSTM OBC
+//GOSTM CAMERA
+//GOSTM XBAND
+//GOSTM ADCS
+//GOSTM UHF
+//GOSTM PANEL1
+//GOSTM PANEL2
+//GOSTM 
 int gostm_check(){
 return 0;
 }//
