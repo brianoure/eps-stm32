@@ -111,7 +111,28 @@ if(mydec==13){return D;    }//if
 if(mydec==14){return E;    }//if
 if(mydec==15){return F;    }//if
 return 0;
-}//dec_to_ascii
+}//dec_to_hex_in_ascii
+
+//OK
+int ascii_hex_to_dec(int asciihex){
+if(asciihex==zero ){return 0; }
+if(asciihex==one  ){return 1; }
+if(asciihex==two  ){return 2; }
+if(asciihex==three){return 3; }
+if(asciihex==four ){return 4; }
+if(asciihex==five ){return 5; }
+if(asciihex==six  ){return 6; }
+if(asciihex==seven){return 7; }
+if(asciihex==eight){return 8; }
+if(asciihex==nine ){return 9; }
+if(asciihex==A    ){return 10;}
+if(asciihex==B    ){return 11;}
+if(asciihex==C    ){return 12;}
+if(asciihex==D    ){return 13;}
+if(asciihex==E    ){return 14;}
+if(asciihex==F    ){return 15;}
+return 0;
+}//ascii_hex_to_dec
 
 //OK
 int receive_binary [400];
@@ -603,6 +624,8 @@ return 0;
 }//gm_check
 
 
+
+//OK
 //{GSC}->{EPS ACK GSC EPS MASTER}->{}->{END}
 //mycounter_64bit
 int gsc_check(){
@@ -634,7 +657,26 @@ else{nack_response();}//else
 return 0;
 }//gsc_check
 
+
+
+
+//SSC hhhhhhhhhhhhhhhh END
 int ssc_check(){
+if(
+   (receive_symbol[0]==S)&&(receive_symbol[1]==S)&&(receive_symbol[2]==C)&&(receive_symbol[3]==space)&&
+   (receive_symbol[21]==E)&&(receive_symbol[22]==N)&&(receive_symbol[23]==D)
+  ){
+  mycounter_64bit[0]=(((ascii_hex_to_dec(receive_symbol[4 ]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[5 ]))&&15);
+  mycounter_64bit[1]=(((ascii_hex_to_dec(receive_symbol[6 ]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[7 ]))&&15);
+  mycounter_64bit[2]=(((ascii_hex_to_dec(receive_symbol[8 ]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[9 ]))&&15);
+  mycounter_64bit[3]=(((ascii_hex_to_dec(receive_symbol[10]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[11]))&&15);
+  mycounter_64bit[4]=(((ascii_hex_to_dec(receive_symbol[12]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[13]))&&15);
+  mycounter_64bit[5]=(((ascii_hex_to_dec(receive_symbol[14]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[15]))&&15);
+  mycounter_64bit[6]=(((ascii_hex_to_dec(receive_symbol[16]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[17]))&&15);
+  mycounter_64bit[7]=(((ascii_hex_to_dec(receive_symbol[18]))&&15)<<4)|((ascii_hex_to_dec(receive_symbol[19]))&&15);
+  ack_response();
+}//if
+else{nack_response();}//else
 return 0;
 }//ssc_check
 
