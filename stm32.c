@@ -460,6 +460,7 @@ return 0;
 }//sm_check
 
 
+//OK
 //GM CCU        -> 
 //GM DEPLOYFUSE ->
 //GM OBC        ->
@@ -480,8 +481,7 @@ int gm_payload=(int)(
        gm&&(receive_symbol[2]==space)&&
        (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==Y)&&(receive_symbol[6]==L)&&(receive_symbol[7]==O)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D));
 /*review*/
-int mode=(int)(mode&&(receive_symbol[0]==M)&&(receive)_symbol[1]==O)&&(receive_symbol[2]==D)&&(receive_symbol[3]==E));
-int mode_ccu_activestandby=(int)(mode&&(receive_symbol[4]==space)&&(receive)_symbol[5]==C)&&(receive_symbol[6]==C)&&(receive_symbol[7]==U)&&(receive_symbol[8]=space)&&(receive_symbol[9]==A)&&(receive_symbol[10]==C)&&(receive_symbol[11]==T)&&(receive_symbol[12]==I)&&(receive_symbol[;
+int mode_ccu_activestandby;
 int mode_ccu_activebeacon;
 int mode_ccu_uhfcomm;
 int mode_deployfuse_active6s;
@@ -496,8 +496,8 @@ int mode_payload_active3camera;
 int mode_payload_activepl;
 int mode_payload_activeph;
 int mode_payload_xband;
-if(gm_ccu)|| gm_deployfuse || gm_obc || gm_adcs || gm_gps || gm_payload ){
-ack_response();byte_transmit(space);
+if( gm_ccu|| gm_deployfuse || gm_obc || gm_adcs || gm_gps || gm_payload ){
+ack_response();byte_transmit(space);//A,C,K,space
 if(gm_ccu       ){
   if(mode_ccu_activestandby){
     int response[]={M,O,D,E,space,C,C,U,space,A,C,T,I,V,E,S,T,A,N,D,B,Y};for(int index=0;index<=21;index++){byte_transmit(response[index]);}
