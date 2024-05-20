@@ -63,17 +63,55 @@ int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E
 
 //OK
 int ascii_to_dec(int x){
-if(==zero ){return 0;}//if
-if(==one  ){return 1;}//if
-if(==two  ){return 2;}//if
-if(==three){return 3;}//if
-if(==four ){return 4;}//if
-if(==five ){return 5;}//if
-if(==six  ){return 6;}//if
-if(==seven){return 7;}//if
-if(==eight){return 8;}//if
-if(==nine ){return 9;}//if
+if(x==zero ){return 0;}//if
+if(x==one  ){return 1;}//if
+if(x==two  ){return 2;}//if
+if(x==three){return 3;}//if
+if(x==four ){return 4;}//if
+if(x==five ){return 5;}//if
+if(x==six  ){return 6;}//if
+if(x==seven){return 7;}//if
+if(x==eight){return 8;}//if
+if(x==nine ){return 9;}//if
 }//ascii_to_dec
+
+
+//OK
+int dec_to_ascii(int mydec){
+if(x==0){return zero; }//if
+if(x==1){return one;  }//if
+if(x==2){return two;  }//if
+if(x==3){return three;}//if
+if(x==4){return four; }//if
+if(x==5){return five; }//if
+if(x==6){return six;  }//if
+if(x==7){return seven;}//if
+if(x==8){return eight;}//if
+if(x==9){return nine; }//if
+return 0;
+}//dec_to_ascii
+
+
+//OK
+int dec_to_hex_in_ascii(int mydec){
+if(mydec==0 ){return zero; }//if
+if(mydec==1 ){return one;  }//if
+if(mydec==2 ){return two;  }//if
+if(mydec==3 ){return three;}//if
+if(mydec==4 ){return four; }//if
+if(mydec==5 ){return five; }//if
+if(mydec==6 ){return six;  }//if
+if(mydec==7 ){return seven;}//if
+if(mydec==8 ){return eight;}//if
+if(mydec==9 ){return nine; }//if
+if(mydec==10){return A;    }//if
+if(mydec==11){return B;    }//if
+if(mydec==12){return C;    }//if
+if(mydec==13){return D;    }//if
+if(mydec==14){return E;    }//if
+if(mydec==15){return F;    }//if
+return 0;
+}//dec_to_ascii
 
 //OK
 int receive_binary [400];
@@ -87,6 +125,10 @@ for(int index=0;index<=399;index++){receive_binary [index]=0;}
 for(int index=0;index<=49 ;index++){receive_symbol [index]=0;}
 for(int index=0;index<=399;index++){transmit_binary[index]=0;}
 for(int index=0;index<=49 ;index++){transmit_symbol[index]=0;}
+
+
+//OK
+int mycounter_64bit[]={0,0,0,0,0,0,0,0};
 
 //OK
 int bit_transmit(int value){//bit_transmit
@@ -562,7 +604,33 @@ return 0;
 
 
 //{GSC}->{EPS ACK GSC EPS MASTER}->{}->{END}
+//mycounter_64bit
 int gsc_check(){
+if( (receive_symbol[0]==G)&&(receive_symbol[1]==S)&&(receive_symbol[2]==C) ){
+  int hex0 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[0]&&240))>>4));
+  int hex1 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[0]&&240))>>0));
+  int hex2 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[1]&&240))>>4));
+  int hex3 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[1]&&240))>>0));
+  int hex4 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[2]&&240))>>4));
+  int hex5 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[2]&&240))>>0));
+  int hex6 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[3]&&240))>>4));
+  int hex7 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[3]&&240))>>0));
+  int hex8 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[4]&&240))>>4));
+  int hex9 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[4]&&240))>>0));
+  int hex10=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[5]&&240))>>4));
+  int hex11=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[5]&&240))>>0));
+  int hex12=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[6]&&240))>>4));
+  int hex13=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[6]&&240))>>0));
+  int hex14=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[7]&&240))>>4));
+  int hex15=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[7]&&240))>>0));
+  int response[]={
+                  A,C,K,space,
+                  H,E,X,C,O,U,N,T,E,R,space,
+                  hex0,hex1,hex2,hex3,hex4,hex5,hex6,hex7,hex8,hex9,hex10,hex11,hex12,hex13,hex14,hex15,space
+                 };
+ for(int index=0;index<=31;index++){byte_transmit(response[index]);}
+}//if
+else{nack_response();}//else
 return 0;
 }//gsc_check
 
