@@ -467,20 +467,21 @@ return 0;
 //GM GPS        ->
 //GM PAYLOAD    ->
 int gm_check(){
-int gm=(int)(gm&&(receive_symbol[2]==G)&&(receive_symbol[2]==M));
-int gm_ccu=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U));
+int gm=(int)(gm&&(receive_symbol[0]==G)&&(receive_symbol[1]==M));
+int gm_ccu=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[3]==C)&&(receive_symbol[4]==C)&&(receive_symbol[5]==U));
 int gm_deployfuse=(int)(
        gm&&(receive_symbol[2]==space)&&
-       (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
-       (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E));
-int gm_obc=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==O)&&(receive_symbol[2]==B)&&(receive_symbol[2]==C));
-int gm_adcs=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D)&&(receive_symbol[2]==C)&&(receive_symbol[2]==S));
-int gm_gps=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[2]==G)&&(receive_symbol[2]==P)&&(receive_symbol[2]==S));
+       (receive_symbol[3]==D)&&(receive_symbol[4]==E)&&(receive_symbol[5]==P)&&(receive_symbol[6]==L)&&(receive_symbol[7]==O)&&(receive_symbol[8]==Y)&&
+       (receive_symbol[9]==F)&&(receive_symbol[10]==U)&&(receive_symbol[11]==S)&&(receive_symbol[12]==E));
+int gm_obc=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[3]==O)&&(receive_symbol[4]==B)&&(receive_symbol[5]==C));
+int gm_adcs=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[3]==A)&&(receive_symbol[4]==D)&&(receive_symbol[5]==C)&&(receive_symbol[6]==S));
+int gm_gps=(int)(gm&&(receive_symbol[2]==space)&&(receive_symbol[3]==G)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S));
 int gm_payload=(int)(
        gm&&(receive_symbol[2]==space)&&
-       (receive_symbol[2]==P)&&(receive_symbol[2]==A)&&(receive_symbol[2]==Y)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==A)&&(receive_symbol[2]==D));
+       (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==Y)&&(receive_symbol[6]==L)&&(receive_symbol[7]==O)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D));
 /*review*/
-int mode_ccu_activestandby;
+int mode=(int)(mode&&(receive_symbol[0]==M)&&(receive)_symbol[1]==O)&&(receive_symbol[2]==D)&&(receive_symbol[3]==E));
+int mode_ccu_activestandby=(int)(mode&&(receive_symbol[4]==space)&&(receive)_symbol[5]==C)&&(receive_symbol[6]==C)&&(receive_symbol[7]==U)&&(receive_symbol[8]=space)&&(receive_symbol[9]==A)&&(receive_symbol[10]==C)&&(receive_symbol[11]==T)&&(receive_symbol[12]==I)&&(receive_symbol[;
 int mode_ccu_activebeacon;
 int mode_ccu_uhfcomm;
 int mode_deployfuse_active6s;
@@ -560,7 +561,7 @@ return 0;
 }//gm_check
 
 
-
+//{GSC}->{EPS ACK GSC EPS MASTER}->{}->{END}
 int gsc_check(){
 return 0;
 }//gsc_check
