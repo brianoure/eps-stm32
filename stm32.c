@@ -58,7 +58,7 @@ int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;int hyphen=45;
 
 //OK.....data
-int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY,space,EPS};
+int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
 
 
 //OK
@@ -336,27 +336,28 @@ int sm=(int)((receive_symbol[0]==S)&&(receive_symbol[1]==M));
 int sm_ccu_active=(int)(
                   sm&&(receive_symbol[2]==space)&&
                   (receive_symbol[3]==C)&&(receive_symbol[4]==C)&&(receive_symbol[5]==U)&&(receive_symbol[6]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)
+                  (receive_symbol[7]==A)&&(receive_symbol[8]==C)&&(receive_symbol[9]==T)&&(receive_symbol[10]==I)&&(receive_symbol[11]==V)&&(receive_symbol[12]==E)
                   );
 int ssm_ccu_activestandby=(int)(
                   sm_ccu_active&&
-                  (receive_symbol[2]==S)&&(receive_symbol[2]==T)&&(receive_symbol[2]==A)&&(receive_symbol[2]==N)&&(receive_symbol[2]==D)&&(receive_symbol[2]==B)&&(receive_symbol[2]==Y)
+                  (receive_symbol[13]==S)&&(receive_symbol[14]==T)&&(receive_symbol[15]==A)&&(receive_symbol[16]==N)&&(receive_symbol[17]==D)&&
+                  (receive_symbol[18]==B)&&(receive_symbol[19]==Y)
                   );
 int sm_ccu_activebeacon=(int)(
                   sm_ccu_active&&
-                  (receive_symbol[2]==B)&&(receive_symbol[2]==E)&&(receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==N)
+                  (receive_symbol[13]==B)&&(receive_symbol[14]==E)&&(receive_symbol[15]==A)&&(receive_symbol[16]==C)&&(receive_symbol[17]==O)&&(receive_symbol[18]==N)
                   );
 int sm_ccu_uhfcomm=(int)(
-                  sm&&(receive_symbol[2]==space)&&(receive_symbol[2]==C)&&(receive_symbol[2]==C)&&(receive_symbol[2]==U)&&
-                  (receive_symbol[2]==U)&&(receive_symbol[2]==H)&&(receive_symbol[2]==F)&&
-                  (receive_symbol[2]==C)&&(receive_symbol[2]==O)&&(receive_symbol[2]==M)&&(receive_symbol[2]==M)
+                  sm&&(receive_symbol[2]==space)&&(receive_symbol[3]==C)&&(receive_symbol[4]==C)&&(receive_symbol[5]==U)&&
+                  (receive_symbol[6]==U)&&(receive_symbol[7]==H)&&(receive_symbol[8]==F)&&
+                  (receive_symbol[9]==C)&&(receive_symbol[10]==O)&&(receive_symbol[11]==M)&&(receive_symbol[12]==M)
                   );
 int sm_deployfuse_active6s=(int)(
                   sm&&(receive_symbol[2]==space)&&
-                  (receive_symbol[2]==D)&&(receive_symbol[2]==E)&&(receive_symbol[2]==P)&&(receive_symbol[2]==L)&&(receive_symbol[2]==O)&&(receive_symbol[2]==Y)&&
-                  (receive_symbol[2]==F)&&(receive_symbol[2]==U)&&(receive_symbol[2]==S)&&(receive_symbol[2]==E)&&(receive_symbol[6]==space)&&
-                  (receive_symbol[2]==A)&&(receive_symbol[2]==C)&&(receive_symbol[2]==T)&&(receive_symbol[2]==I)&&(receive_symbol[2]==V)&&(receive_symbol[2]==E)&&
-                  (receive_symbol[2]=six)&&(receive_symbol[2]==S)
+                  (receive_symbol[3 ]==D )&&(receive_symbol[4 ]==E)&&(receive_symbol[5 ]==P)&&(receive_symbol[6 ]==L)&&(receive_symbol[7 ]==O)&&(receive_symbol[8 ]==Y)&&
+                  (receive_symbol[9 ]==F )&&(receive_symbol[10]==U)&&(receive_symbol[11]==S)&&(receive_symbol[12]==E)&&(receive_symbol[13]==space)&&
+                  (receive_symbol[14]==A )&&(receive_symbol[15]==C)&&(receive_symbol[16]==T)&&(receive_symbol[17]==I)&&(receive_symbol[18]==V)&&(receive_symbol[19]==E)&&
+                  (receive_symbol[20]=six)&&(receive_symbol[21]==S)
                   );
 int sm_obc_active=(int)(
                   sm&&(receive_symbol[2]==space)&&
