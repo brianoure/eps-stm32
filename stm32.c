@@ -732,9 +732,12 @@ return 0;
 }
 
 
+//OK  
+//connect batteries to solar panels for charging
+//reply  ACK or NACK
 int kdis_check(){
 if(
-(receive_symbol[0]==K)&&(receive_symbol[1]==D)&&(receive_symbol[2]==I)&&(receive_symbol[3]==S)&&/*review TX ACTIVE*/
+(receive_symbol[0]==K)&&(receive_symbol[1]==D)&&(receive_symbol[2]==I)&&(receive_symbol[3]==S)
 ){//kdis detected
 /*review KDIS*/
 int response_array[12]={E,P,S,space,A,C,K,space,K,D,I,S};
@@ -742,7 +745,7 @@ for(int symbol_index=0;symbol_index<=11;symbol_index++){//for
 byte_transmit((response_array[symbol_index]));
 }//for
 }//kdis detected
-else{if(/*review TX ACTIVE*/){nack_response();}}
+else{nack_response();}}
 return 0;
 }
 
