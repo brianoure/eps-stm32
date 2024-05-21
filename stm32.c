@@ -56,6 +56,11 @@ int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;int hyphen=45;
+/**
+int a=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
+int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
+int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
+**/
 
 //OK.....data
 int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
@@ -697,39 +702,188 @@ int sfp_check(){
 return 0;
 }//sfp_check
 
+
+//{FOF EPS ADCS-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS RS12V-EN  } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS GPS-EN    } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS ADCS12-EN } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN} 
+//{FOF EPS RS3V3-EN  } -> {ACK FOF EPS 12V} or {NACK FOF EPS 5V0}
+//{FOF EPS UHF-EN    } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS PL-EN     } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS RS5V-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS PL5V-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FOF EPS ADCS5V-EN } -> {ACK FOF EPS 12V} or {NACK FOF EPS 3V3}
+//{FOF EPS XB12V-EN  } -> {ACK FOF EPS 12V} or {NACK FOF EPS 3V3}
+//{FOF EPS CCU5V-EN  } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
 int fon_check(){
 return 0;
 }//fon_check
 
+
+
+
+//{FOF EPS ADCSEN   } -> {ACK FOF EPS ADCSEN  } or {NACK FOF EPS ADCSEN  }
+//{FOF EPS RS12VEN  } -> {ACK FOF EPS RS12VEN } or {NACK FOF EPS RS12VEN } 
+//{FOF EPS GPSEN    } -> {ACK FOF EPS GPSEN   } or {NACK FOF EPS GPSEN   }
+//{FOF EPS ADCS12EN } -> {ACK FOF EPS ADCS12EN} or {NACK FOF EPS ADCS12EN} 
+//{FOF EPS RS3V3EN  } -> {ACK FOF EPS RS3V3EN } or {NACK FOF EPS RS3V3EN }
+//{FOF EPS UHFEN    } -> {ACK FOF EPS UHFEN   } or {NACK FOF EPS UHFEN   }
+//{FOF EPS PLEN     } -> {ACK FOF EPS PLEN    } or {NACK FOF EPS PLEN    }
+//{FOF EPS RS5VEN   } -> {ACK FOF EPS RS5VEN  } or {NACK FOF EPS RS5VEN  }
+//{FOF EPS PL5VEN   } -> {ACK FOF EPS PL5VEN  } or {NACK FOF EPS PL5VEN  }
+//{FOF EPS ADCS5VEN } -> {ACK FOF EPS ADCS5VEN} or {NACK FOF EPS ADCS5VEN}
+//{FOF EPS XB12VEN  } -> {ACK FOF EPS XB12VEN } or {NACK FOF EPS XB12VEN }
+//{FOF EPS CCU5VEN  } -> {ACK FOF EPS CCU5VEN } or {NACK FOF EPS CCU5VEN }
 int fof_check(){
+int fof_eps=(int)((receive_symbol[0]==F)&&(receive_symbol[1]==O)&&(receive_symbol[2]==F)&&(receive_symbol[3]==space)&&
+                  (receive_symbol[4]==E)&&(receive_symbol[5]==P)&&(receive_symbol[6]==S)
+                 );
+int fof_eps_adcsen=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                   (receive_symbol[11]==S)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fof_eps_rs12en=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==one)&&
+                   (receive_symbol[11]==two)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fof_eps_gpsen= (int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==G)&&(receive_symbol[9]==P)&&(receive_symbol[10]==S)&&
+                   (receive_symbol[11]==E)&&(receive_symbol[12]==N)
+                   );
+int fof_eps_adcs12en=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                     (receive_symbol[11]==S)&&(receive_symbol[12]==one)&&(receive_symbol[13]==two)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fof_eps_rs3v3en=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==three)&&
+                     (receive_symbol[11]==V)&&(receive_symbol[12]==three)&&(receive_symbol[13]==N)
+                     );
+int fof_eps_uhfen=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==U)&&(receive_symbol[9]==H)&&(receive_symbol[10]==F)&&
+                     (receive_symbol[11]==E)&&(receive_symbol[12]==N)
+                     );
+int fof_eps_plen=(int)(
+                 (receive_symbol[7]==space)&&(receive_symbol[8]==P)&&(receive_symbol[9]==L)&&(receive_symbol[10]==E)&&(receive_symbol[11]==N)
+                 );
+int fof_eps_rs5ven=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==five)&&
+                   (receive_symbol[11]==V)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fof_eps_pl5ven=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==P)&&(receive_symbol[9]==L)&&(receive_symbol[10]==five)&&
+                   (receive_symbol[11]==V)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fof_eps_adcs5ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                     (receive_symbol[11]==S)&&(receive_symbol[12]==five)&&(receive_symbol[13]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fof_eps_xb12ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==X)&&(receive_symbol[9]==B)&&(receive_symbol[10]==one)&&
+                     (receive_symbol[11]==two)&&(receive_symbol[12]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fof_eps_ccu5ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==C)&&(receive_symbol[9]==C)&&(receive_symbol[10]==U)&&
+                     (receive_symbol[11]==five)&&(receive_symbol[12]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+if(
+fof_eps_adcsen || fof_eps_rs12en || fof_eps_gpsen || fof_eps_adcs12en || fof_eps_rs3v3en || fof_eps_uhfen || fof_eps_plen || fof_eps_rs5ven ||
+fof_eps_pl5ven || fof_eps_adcs5ven || fof_eps_xb12ven || fof_eps_ccu5ven
+){
+ack_response();byte_transmit(space);
+  if(fof_eps_adcsen  ){/*review*/}//if
+  if(fof_eps_rs12en  ){/*review*/}//if
+  if(fof_eps_gpsen   ){/*review*/}//if
+  if(fof_eps_adcs12en){/*review*/}//if
+  if(fof_eps_rs3v3en ){/*review*/}//if
+  if(fof_eps_uhfen   ){/*review*/}//if
+  if(fof_eps_plen    ){/*review*/}//if
+  if(fof_eps_rs5ven  ){/*review*/}//if
+  if(fof_eps_pl5ven  ){/*review*/}//if
+  if(fof_eps_adcs5ven){/*review*/}//if
+  if(fof_eps_xb12ven ){}//if
+  if(fof_eps_ccu5ven ){}//if
+}//if
 return 0;
 }//fof_check
 
-//GOSTM OBC
-//GOSTM CAMERA
-//GOSTM XBAND
-//GOSTM ADCS
-//GOSTM UHF
-//GOSTM PANEL1
-//GOSTM PANEL2
-//GOSTM 
+
+
+
+//OK
+//Get Online stored telemetry i.e. live from each susbsystem
+//GOSTM EPS
+//#GOSTM ADCS
+//#GOSTM OBC
+//#GOSTM UHF
+//#GOSTM XBAND
+//#GOSTM CAMERA
 int gostm_check(){
+int gostm=(int)((receive_symbol[0]==G)&&(receive_symbol[1]==O)&&(receive_symbol[2]==S)&&(receive_symbol[3]==T)&&(receive_symbol[4]==M));
+int gostm_eps  =(int)(gostm&&(receive_symbol[5]==space)&&(receive_symbol[6]==E)&&(receive_symbol[7]==P)&&(receive_symbol[8]==S));
+int gostm_adcs =(int)(gostm&&(receive_symbol[5]==space)&&(receive_symbol[6]==A)&&(receive_symbol[7]==D)&&(receive_symbol[8]==C)&&(receive_symbol[9]==S));
+int gostm_obc  =(int)(gostm&&(receive_symbol[5]==space)&&(receive_symbol[6]==O)&&(receive_symbol[7]==B)&&(receive_symbol[8]==C));
+int gostm_uhf  =(int)(gostm&&(receive_symbol[5]==space)&&(receive_symbol[6]==U)&&(receive_symbol[7]==H)&&(receive_symbol[8]==F));
+int gostm_xband=(int)(gostm&&(receive_symbol[5]==space)&&(receive_symbol[6]==X)&&(receive_symbol[7]==B)&&(receive_symbol[8]==A)&&(receive_symbol[9]==N)&&(receive_symbol[9]==D));
+if(gostm_eps){
+  /*review*/
+}//if
+else{nack_response();}
 return 0;
 }//
 
+
+
+
+
+
+
+
+//Missing O?
+//Get stored telemetry from OBC
+//GSTLM EPS
+//GSTLM ADCS
+//GSTLM OBC
+//GSTLM UHF
+//GSTLM XBAND
+//GSTLM CAMERA
+//int gstlm_check(){
+//int gstlm=(int)((receive_symbol[0]==G)&&(receive_symbol[1]==S)&&(receive_symbol[2]==T)&&(receive_symbol[3]==L)&&(receive_symbol[4]==M));
+//int gstlm_eps=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==E)&&(receive_symbol[7]==P)&&(receive_symbol[8]==S));
+//int gstlm_adcs=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==A)&&(receive_symbol[7]==D)&&(receive_symbol[8]==C)&&(receive_symbol[9]==S));
+//int gstlm_obc=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==O)&&(receive_symbol[7]==B)&&(receive_symbol[8]==C));
+//int gstlm_uhf=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==U)&&(receive_symbol[7]==H)&&(receive_symbol[8]==F));
+//int gstlm_xband=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==X)&&(receive_symbol[7]==B)&&(receive_symbol[8]==A)&&(receive_symbol[9]==N)&&(receive_sysmbol[10]==D));
+//int gstlm_camera=(int)(gstlm&&(receive_symbol[5]==space)&&(receive_symbol[6]==C)&&(receive_symbol[7]==A)&&(receive_symbol[8]==M)&&(receive_symbol[9]==E)&&(receive_symbol[10]==R)&&(receive_symbol[11]==A));
+//if(
+//gstlm_eps || gstlm_adcs || gstlm_obc || gstlm_uhf || gstlm_xband || gstlm_camera
+//){//gstlm detected
+//if(gstlm_eps   ){}//if
+//if(gstlm_adcs  ){}//if
+//if(gstlm_obc   ){}//if
+//if(gstlm_uhf   ){}//if
+//if(gstlm_xband ){}//if
+//if(gstlm_camera){}//if
+//else{/*review*/}
+//return 0;
+//}//gstlm_check
+
+
+//OK
+//*Probability Error might be too low
+//GCS to OBC to terminate the satellite mission/end of life
 int ken_check(){
 if(
-(receive_symbol[0]==K)&&(receive_symbol[1]==E)&&(receive_symbol[2]==N)&&(receive_symbol[3]==S)&&/*review TX ACTIVE*/
-){//kdis detected
+(receive_symbol[0]==K)&&(receive_symbol[1]==E)&&(receive_symbol[2]==N)
+){//ken detected
 /*review KDIS*/
-int response_array[12]={E,P,S,space,A,C,K,space,K,D,I,S};
-for(int symbol_index=0;symbol_index<=11;symbol_index++){//for
-  byte_transmit((response_array[symbol_index]));
+int response_array[7]={A,C,K,space,K,E,N};
+for(int symbol_index=0;symbol_index<=6;symbol_index++){//for
+  byte_transmit(response_array[symbol_index]);
 }//for
-}//kdis detected
-else{if(/*review TX ACTIVE*/){nack_response();}}
+}//ken detected
+else{nack_response();}
 return 0;
-}
+}//ken_check
 
 
 //OK  
@@ -740,16 +894,16 @@ if(
 (receive_symbol[0]==K)&&(receive_symbol[1]==D)&&(receive_symbol[2]==I)&&(receive_symbol[3]==S)
 ){//kdis detected
 /*review KDIS*/
-int response_array[12]={E,P,S,space,A,C,K,space,K,D,I,S};
-for(int symbol_index=0;symbol_index<=11;symbol_index++){//for
-byte_transmit((response_array[symbol_index]));
+int response_array[8]={A,C,K,space,K,D,I,S};
+for(int symbol_index=0;symbol_index<=7;symbol_index++){//for
+byte_transmit(response_array[symbol_index]);
 }//for
 }//kdis detected
-else{nack_response();}}
+else{nack_response();}
 return 0;
 }
 
-
+//NACK review one line responses
 
 
 
