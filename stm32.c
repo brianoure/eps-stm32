@@ -703,19 +703,87 @@ return 0;
 }//sfp_check
 
 
-//{FOF EPS ADCS-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS RS12V-EN  } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS GPS-EN    } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS ADCS12-EN } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN} 
-//{FOF EPS RS3V3-EN  } -> {ACK FOF EPS 12V} or {NACK FOF EPS 5V0}
-//{FOF EPS UHF-EN    } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS PL-EN     } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS RS5V-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS PL5V-EN   } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
-//{FOF EPS ADCS5V-EN } -> {ACK FOF EPS 12V} or {NACK FOF EPS 3V3}
-//{FOF EPS XB12V-EN  } -> {ACK FOF EPS 12V} or {NACK FOF EPS 3V3}
-//{FOF EPS CCU5V-EN  } -> {ACK FOF EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
+//{FON EPS ADCS-EN   } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS RS12V-EN  } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS GPS-EN    } -> {ACK FON EPS RS5V-EN} or {NACK FOn EPS RS5V-EN}
+//{FON EPS ADCS12-EN } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN} 
+//{FON EPS RS3V3-EN  } -> {ACK FON EPS 12V} or {NACK FON EPS 5V0}
+//{FON EPS UHF-EN    } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS PL-EN     } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS RS5V-EN   } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS PL5V-EN   } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
+//{FON EPS ADCS5V-EN } -> {ACK FON EPS 12V} or {NACK FON EPS 3V3}
+//{FON EPS XB12V-EN  } -> {ACK FON EPS 12V} or {NACK FON EPS 3V3}
+//{FON EPS CCU5V-EN  } -> {ACK FON EPS RS5V-EN} or {NACK FOF EPS RS5V-EN}
 int fon_check(){
+int fon_eps=(int)((receive_symbol[0]==F)&&(receive_symbol[1]==O)&&(receive_symbol[2]==N)&&(receive_symbol[3]==space)&&
+                  (receive_symbol[4]==E)&&(receive_symbol[5]==P)&&(receive_symbol[6]==S)
+                 );
+int fon_eps_adcsen=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                   (receive_symbol[11]==S)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fon_eps_rs12en=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==one)&&
+                   (receive_symbol[11]==two)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fon_eps_gpsen= (int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==G)&&(receive_symbol[9]==P)&&(receive_symbol[10]==S)&&
+                   (receive_symbol[11]==E)&&(receive_symbol[12]==N)
+                   );
+int fon_eps_adcs12en=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                     (receive_symbol[11]==S)&&(receive_symbol[12]==one)&&(receive_symbol[13]==two)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fon_eps_rs3v3en=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==three)&&
+                     (receive_symbol[11]==V)&&(receive_symbol[12]==three)&&(receive_symbol[13]==N)
+                     );
+int fon_eps_uhfen=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==U)&&(receive_symbol[9]==H)&&(receive_symbol[10]==F)&&
+                     (receive_symbol[11]==E)&&(receive_symbol[12]==N)
+                     );
+int fon_eps_plen=(int)(
+                 (receive_symbol[7]==space)&&(receive_symbol[8]==P)&&(receive_symbol[9]==L)&&(receive_symbol[10]==E)&&(receive_symbol[11]==N)
+                 );
+int fon_eps_rs5ven=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==R)&&(receive_symbol[9]==S)&&(receive_symbol[10]==five)&&
+                   (receive_symbol[11]==V)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fon_eps_pl5ven=(int)(
+                   (receive_symbol[7]==space)&&(receive_symbol[8]==P)&&(receive_symbol[9]==L)&&(receive_symbol[10]==five)&&
+                   (receive_symbol[11]==V)&&(receive_symbol[12]==E)&&(receive_symbol[13]==N)
+                   );
+int fon_eps_adcs5ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==A)&&(receive_symbol[9]==D)&&(receive_symbol[10]==C)&&
+                     (receive_symbol[11]==S)&&(receive_symbol[12]==five)&&(receive_symbol[13]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fon_eps_xb12ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==X)&&(receive_symbol[9]==B)&&(receive_symbol[10]==one)&&
+                     (receive_symbol[11]==two)&&(receive_symbol[12]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+int fon_eps_ccu5ven=(int)(
+                     (receive_symbol[7]==space)&&(receive_symbol[8]==C)&&(receive_symbol[9]==C)&&(receive_symbol[10]==U)&&
+                     (receive_symbol[11]==five)&&(receive_symbol[12]==V)&&(receive_symbol[13]==E)&&(receive_symbol[13]==N)
+                     );
+if(
+fof_eps_adcsen || fof_eps_rs12en || fof_eps_gpsen || fof_eps_adcs12en || fof_eps_rs3v3en || fof_eps_uhfen || fof_eps_plen || fof_eps_rs5ven ||
+fof_eps_pl5ven || fof_eps_adcs5ven || fof_eps_xb12ven || fof_eps_ccu5ven
+){
+ack_response();byte_transmit(space);
+  if(fon_eps_adcsen  ){/*review*/}//if
+  if(fon_eps_rs12en  ){/*review*/}//if
+  if(fon_eps_gpsen   ){/*review*/}//if
+  if(fon_eps_adcs12en){/*review*/}//if
+  if(fon_eps_rs3v3en ){/*review*/}//if
+  if(fon_eps_uhfen   ){/*review*/}//if
+  if(fon_eps_plen    ){/*review*/}//if
+  if(fon_eps_rs5ven  ){/*review*/}//if
+  if(fon_eps_pl5ven  ){/*review*/}//if
+  if(fon_eps_adcs5ven){/*review*/}//if
+  if(fon_eps_xb12ven ){}//if
+  if(fon_eps_ccu5ven ){}//if
+}//if
 return 0;
 }//fon_check
 
