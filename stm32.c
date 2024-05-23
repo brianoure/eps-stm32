@@ -699,22 +699,34 @@ if(
 (receive_symbol[11]==T)&&(receive_symbol[4 ]==I)&&(receive_symbol[12]==M)&&(receive_symbol[13]==E)
 ){
 ack_response();
+int h1= (int)(epscurrenttime[0]/10000);
+int h2=((int)(epscurrenttime[0]/1000))-(h1*10000);
+int h3=((int)(epscurrenttime[0]/100 ))-(h1*10000)-(h2*1000);
+int h4=((int)(epscurrenttime[0]/10  ))-(h1*10000)-(h2*1000)-(h3*100);
+int h5=((int)(epscurrenttime[0]     ))-(h1*10000)-(h2*1000)-(h3*100)-(h4*10);
+int m1= (int)(epscurrenttime[1]/10);
+int m2=      (epscurrenttime[1])-(m1*10);
+int s1= (int)(epscurrenttime[2]/10);
+int s2=      (epscurrenttime[2])-(s1*10);;
+int u1= (int)(epscurrenttime[3]/100  );
+int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
+int u3=      (epscurrenttime[3]  )   -(u1*100)-(u2*10);
 int response[]={
 space,
-dec_to_ascii(epscurrenttime[0]/10000),
-dec_to_ascii(epscurrenttime[0]/1000),
-dec_to_ascii(epscurrenttime[0]/100),
-dec_to_ascii(epscurrenttime[0]/10),
-dec_to_ascii(epscurrenttime[0]),
-dec_to_ascii(epscurrenttime[1]/10),
-dec_to_ascii(epscurrenttime[1]),
-dec_to_ascii(epscurrenttime[2]/10),
-dec_to_ascii(epscurrenttime[2]),
-dec_to_ascii(epscurrenttime[3]/100),
-dec_to_ascii(epscurrenttime[3]/10),
-dec_to_ascii(epscurrenttime[3]),
+dec_to_ascii(h1),
+dec_to_ascii(h2),
+dec_to_ascii(h3),
+dec_to_ascii(h4),
+dec_to_ascii(h5),
+dec_to_ascii(m1),
+dec_to_ascii(m2),
+dec_to_ascii(s1),
+dec_to_ascii(s2),
+dec_to_ascii(u1),
+dec_to_ascii(u2),
+dec_to_ascii(u3),
 };
-for(int index=0;index<=4;index++){byte_transmit(response[index]);}
+for(int index=0;index<=12;index++){byte_transmit(response[index]);}
 }//if
 else{nack_response();byte_transmit(space);byte_transmit(G);byte_transmit(F);byte_transmit(P);}
 return 0;
