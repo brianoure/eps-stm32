@@ -693,11 +693,29 @@ return 0;
 //GFP CURRENTTIME -> ACK hhhhhmmssuuu 
 int gfp_check(){
 if(
-(receive_symbol[0 ]==G)&&(receive_symbol[1 ]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3]==space)&&
-(receive_symbol[4 ]==C)&&(receive_symbol[5]==U)&&(receive_symbol[6 ]==R)&&(receive_symbol[7 ]==R)&&
-(receive_symbol[8 ]==E)&&(receive_symbol[9]==N)&&(receive_symbol[10]==T)&&
-(receive_symbol[11]==T)&&(receive_symbol[4]==I)&&(receive_symbol[12]==M)&&(receive_symbol[13]==E)
-){}//if
+(receive_symbol[0 ]==G)&&(receive_symbol[1 ]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3 ]==space)&&
+(receive_symbol[4 ]==C)&&(receive_symbol[5 ]==U)&&(receive_symbol[6 ]==R)&&(receive_symbol[7 ]==R)&&
+(receive_symbol[8 ]==E)&&(receive_symbol[9 ]==N)&&(receive_symbol[10]==T)&&
+(receive_symbol[11]==T)&&(receive_symbol[4 ]==I)&&(receive_symbol[12]==M)&&(receive_symbol[13]==E)
+){
+ack_response();
+int response[]={
+space,
+dec_to_ascii(epscurrenttime[0]/10000),
+dec_to_ascii(epscurrenttime[0]/1000),
+dec_to_ascii(epscurrenttime[0]/100),
+dec_to_ascii(epscurrenttime[0]/10),
+dec_to_ascii(epscurrenttime[0]),
+dec_to_ascii(epscurrenttime[1]/10),
+dec_to_ascii(epscurrenttime[1]),
+dec_to_ascii(epscurrenttime[2]/10),
+dec_to_ascii(epscurrenttime[2]),
+dec_to_ascii(epscurrenttime[3]/100),
+dec_to_ascii(epscurrenttime[3]/10),
+dec_to_ascii(epscurrenttime[3]),
+};
+for(int index=0;index<=4;index++){byte_transmit(response[index]);}
+}//if
 else{nack_response();byte_transmit(space);byte_transmit(G);byte_transmit(F);byte_transmit(P);}
 return 0;
 }//gfp_check
