@@ -156,6 +156,10 @@ for(int index=0;index<=49 ;index++){transmit_symbol[index]=0;}
 //OK
 int mycounter_64bit[]={0,0,0,0,0,0,0,0};
 
+
+//OK
+int epscurrenttime[]={0,0,0,0};
+
 //OK
 int bit_transmit(int value){//bit_transmit
 if(value){
@@ -686,23 +690,47 @@ return 0;
 }//ssc_check
 
 
-
-//GFP ADCS -> ACK
-//GFP ACK
+//GFP CURRENTTIME -> ACK hhhhhmmssuuu 
 int gfp_check(){
 if(
 (receive_symbol[0 ]==G)&&(receive_symbol[1 ]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3]==space)&&
-(receive_symbol[21]==E)&&(receive_symbol[22]==N)&&(receive_symbol[23]==D)
+(receive_symbol[4 ]==C)&&(receive_symbol[5]==U)&&(receive_symbol[6 ]==R)&&(receive_symbol[7 ]==R)&&
+(receive_symbol[8 ]==E)&&(receive_symbol[9]==N)&&(receive_symbol[10]==T)&&
+(receive_symbol[11]==T)&&(receive_symbol[4]==I)&&(receive_symbol[12]==M)&&(receive_symbol[13]==E)
 ){}//if
-else{nack_response();}
+else{nack_response();byte_transmit(space);byte_transmit(G);byte_transmit(F);byte_transmit(P);}
 return 0;
 }//gfp_check
 
-int sfp_check(){
+
+
+
+//set function parameters
+//int epscurrenttime[]={h,m,s,u};
+//{SFP CURRENTTIME hhhhhmmssuuu} -> {ACK SFP}OR{NACK SFP}   
+int sfp_check(){//sfp_check
+if(
+  (receive_symbol[0 ]==S)&&(receive_symbol[1]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3 ]==space)&&
+  (receive_symbol[4 ]==C)&&(receive_symbol[5]==U)&&(receive_symbol[6 ]==R)&&(receive_symbol[7 ]==R)&&
+  (receive_symbol[8 ]==E)&&(receive_symbol[9]==N)&&(receive_symbol[10]==T)&&
+  (receive_symbol[11]==T)&&(receive_symbol[4]==I)&&(receive_symbol[12]==M)&&(receive_symbol[13]==E)
+){
+epscurrenttime[0]=(receive_symbol[16]*10000)+(receive_symbol[17]*1000)+(receive_symbol[18]*100)+(receive_symbol[19]*10)+(receive_symbol[20]);
+epscurrenttime[1]=(receive_symbol[21]*10)+(receive_symbol[22]);
+epscurrenttime[2]=(receive_symbol[23]*10)+(receive_symbol[24]);
+epscurrenttime[3]=(receive_symbol[25]*1000)+(receive_symbol[26]*100)+(receive_symbol[26]);
+ack_response();
+int response[]={space,S,F,P};
+for(int index=0;index<=2;index++){byte_transmit(response[index])}//for
+}//if
+else{nack_response();byte_transmit(space);byte_transmit(S);byte_transmit(F);byte_transmit(P);}//else
 return 0;
 }//sfp_check
 
 
+
+
+//switch on specific functions/parts
 //{FON EPS ADCS-EN   } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
 //{FON EPS RS12V-EN  } -> {ACK FON EPS RS5V-EN} or {NACK FON EPS RS5V-EN}
 //{FON EPS GPS-EN    } -> {ACK FON EPS RS5V-EN} or {NACK FOn EPS RS5V-EN}
@@ -770,7 +798,7 @@ if(
 fof_eps_adcsen || fof_eps_rs12en || fof_eps_gpsen || fof_eps_adcs12en || fof_eps_rs3v3en || fof_eps_uhfen || fof_eps_plen || fof_eps_rs5ven ||
 fof_eps_pl5ven || fof_eps_adcs5ven || fof_eps_xb12ven || fof_eps_ccu5ven
 ){
-ack_response();byte_transmit(space);
+  ack_response();byte_transmit(space);
   if(fon_eps_adcsen  ){/*review*/}//if
   if(fon_eps_rs12en  ){/*review*/}//if
   if(fon_eps_gpsen   ){/*review*/}//if
@@ -781,8 +809,8 @@ ack_response();byte_transmit(space);
   if(fon_eps_rs5ven  ){/*review*/}//if
   if(fon_eps_pl5ven  ){/*review*/}//if
   if(fon_eps_adcs5ven){/*review*/}//if
-  if(fon_eps_xb12ven ){}//if
-  if(fon_eps_ccu5ven ){}//if
+  if(fon_eps_xb12ven ){/*review*/}//if
+  if(fon_eps_ccu5ven ){/*review*/}//if
 }//if
 return 0;
 }//fon_check
