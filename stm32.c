@@ -196,45 +196,67 @@ return 0;
 
 
 //OK
-int ack_response(){
-if(/*review TX ACTIVE*/){
-int response_array[]={A,C,K};
-for(int index=0;index<=2;index++){//for
-  byte_transmit(response_array[index]);
-}//for
+int ack_response(){//ack response
+if(1/*review TX ACTIVE*/){
+byte_transmit(A);byte_transmit(C);byte_transmit(K);
 }//if
 return 0;
 }//ack_repsonse
 
 //OK
-int nack_response(){
-if(/*review TX ACTIVE*/){//if
- int response_array[]={N,A,C,K};
- for(int index=0;index<=3;index++){//for
-   byte_transmit(response_array[index]);
- }//for
+int nack_response(){//nack_response
+if(1/*review TX ACTIVE*/){//if
+byte_transmit(N);byte_transmit(A);byte_transmit(C);byte_transmit(K);
 }//if
 return 0;
 }//nack_response
 
-
+/***********************************************COMMANDS********************************************/
+//COMMAND1
 //OK
+//{PING EPS}->{ACK AFDEV-EPS TIME hhhhhmmssuuu} 
 int ping_check(){//ping response
 if(
-(receive_symbol[0]==P    )&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&
-(receive_symbol[4]==space)&&(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)&&
+(receive_symbol[0]==P)&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&(receive_symbol[4]==space)&&
+(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)&&
 /*review TX ACTIVE*/
 ){//ping detected
-int response_array[]={A,C,K,space,A,F,D,E,V,S,A,T,space,E,P,S,space,L,I,V,E};
-for(int index=0;index<=20;index++){//for
-  byte_transmit((response_array[index]));
-}//for
+int h1= (int)(epscurrenttime[0]/10000);
+int h2=((int)(epscurrenttime[0]/1000))-(h1*10000);
+int h3=((int)(epscurrenttime[0]/100 ))-(h1*10000)-(h2*1000);
+int h4=((int)(epscurrenttime[0]/10  ))-(h1*10000)-(h2*1000)-(h3*100);
+int h5=((int)(epscurrenttime[0]     ))-(h1*10000)-(h2*1000)-(h3*100)-(h4*10);
+int m1= (int)(epscurrenttime[1]/10);
+int m2=      (epscurrenttime[1])-(m1*10);
+int s1= (int)(epscurrenttime[2]/10);
+int s2=      (epscurrenttime[2])-(s1*10);;
+int u1= (int)(epscurrenttime[3]/100  );
+int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
+int u3=      (epscurrenttime[3]  )   -(u1*100)-(u2*10);
+int response_array[]={
+  A,C,K,space,
+  A,F,D,E,V,hyphen,E,P,S,space,
+  T,I,M,E,space,
+  dec_to_ascii(h1),
+  dec_to_ascii(h2),
+  dec_to_ascii(h3),
+  dec_to_ascii(h4),
+  dec_to_ascii(h5),
+  dec_to_ascii(m1),
+  dec_to_ascii(m2),
+  dec_to_ascii(s1),
+  dec_to_ascii(s2),
+  dec_to_ascii(u1),
+  dec_to_ascii(u2),
+  dec_to_ascii(u3)
+};
+for(int index=0;index<=30;index++){byte_transmit((response_array[index]));}//for
 }//ping detected
 else{nack_response();}
 return 0;
 }//ping check
 
-
+//COMMAND2
 //OK
 int gd_check(){
 if(
