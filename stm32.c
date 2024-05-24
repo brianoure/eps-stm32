@@ -214,7 +214,7 @@ return 0;
 /***********************************************COMMANDS********************************************/
 //COMMAND1
 //OK
-//{PING EPS}->{ACK AFDEV-EPS TIME hhhhhmmssuuu} 
+//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhhmmssuuu EPSEND} or "just stay quiet" 
 int ping_check(){//ping response
 if(
 (receive_symbol[0]==P)&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&(receive_symbol[4]==space)&&
@@ -234,50 +234,55 @@ int u1= (int)(epscurrenttime[3]/100  );
 int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
 int u3=      (epscurrenttime[3]  )   -(u1*100)-(u2*10);
 int response_array[]={
-  A,C,K,space,
-  A,F,D,E,V,hyphen,E,P,S,space,
-  T,I,M,E,space,
-  dec_to_ascii(h1),
-  dec_to_ascii(h2),
-  dec_to_ascii(h3),
-  dec_to_ascii(h4),
-  dec_to_ascii(h5),
-  dec_to_ascii(m1),
-  dec_to_ascii(m2),
-  dec_to_ascii(s1),
-  dec_to_ascii(s2),
-  dec_to_ascii(u1),
-  dec_to_ascii(u2),
-  dec_to_ascii(u3)
+E,P,S,space,
+A,C,K,space,
+A,F,D,E,V,hyphen,E,P,S,space,
+T,I,M,E,space,
+dec_to_ascii(h1),
+dec_to_ascii(h2),
+dec_to_ascii(h3),
+dec_to_ascii(h4),
+dec_to_ascii(h5),
+dec_to_ascii(m1),
+dec_to_ascii(m2),
+dec_to_ascii(s1),
+dec_to_ascii(s2),
+dec_to_ascii(u1),
+dec_to_ascii(u2),
+dec_to_ascii(u3),space,
+E,P,S,E,N,D
 };
 for(int index=0;index<=30;index++){byte_transmit((response_array[index]));}//for
 }//ping detected
-else{nack_response();}
+//else{nack_response();}//just stay quiet
 return 0;
 }//ping check
 
 //COMMAND2
 //OK
+//{GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd EPSEND}
 int gd_check(){
 if(
 (receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&
 (receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&
 /*review TX ACTIVE*/
 ){//gd detected
-int response_array[]={A,C,K,space,
-                      S,P,C,space,
-                      dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
-                      I,P,C,space,
-                      dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7};
+int response_array[]={
+A,C,K,space,
+S,P,C,space,
+dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
+I,P,C,space,
+dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7
+};
 for(int index=0;index<=26;index++){//for
-  byte_transmit((response_array[index]));
+byte_transmit((response_array[index]));
 }//for
 }//gd detected
 else{nack_response();}
 return 0;
-}
+}//gd_check
 
-
+//COMMAND3
 //OK
 //{PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
 int pd_check(){
