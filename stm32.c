@@ -57,7 +57,8 @@ int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
 int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
-int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;int space=32;int hyphen=45;
+int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
+int space=32;int hyphen=45;int stop=46;int plus=43;
 /**
 int a=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
 int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83;int T=84;
@@ -65,7 +66,7 @@ int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
 **/
 
 //OK.....data
-int eps_data[100]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
+int eps_data[500]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
 
 
 //OK
@@ -341,21 +342,36 @@ return 0;
 
 
 //OK
-//{WD EPS ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss}->{EPS ACK WD}}or{NACK}
-int wd_check(){
+//OverWrite bytes of random data using: A-Z,hyphen,space,plus,stop(28 symbols) inclusive of start and edit points. Don't exceed 499. Careful of overwrite
+//{WD EPS sss eee *********}->{EPS ACK WD EPSEND}}or{EPS NACK WD EPSEND}
+int wd_check(){//wdcheck
+int inclusivestart=(ascii_to_dec(receive_symbol[7 ])*100)+(ascii_to_dec(receive_symbol[7 ])*10)+(ascii_to_dec(receive_symbol[7 ]));
+int inclusiveend  =(ascii_to_dec(receive_symbol[11])*100)+(ascii_to_dec(receive_symbol[12])*10)+(ascii_to_dec(receive_symbol[13]));
+int datastartindex=15;
+int validstartindex=(int)((inclusivestart<=inclusiveend)&&(inclusivestart<499));
+int withinbounds=(int)(inclusiveend<=499);
 if(
 (receive_symbol[0 ]==W)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
-(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)
-){//rd detected
-for(int index=7;index<=106;index++){
-  eps_data[index-7]=receive_symbol[index];
+(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)&&(receive_symbol[6 ]==space)&&
+validstartindex && withinbounds
+){//wd detected
+for(int index=inclusivestart;index<=inclusiveend;index++){//for
+  eps_data[index]=receive_symbol[datastartindex];
+  datastartindex+1;
 }//for...overwrite the data memory
-int response={E,P,S,space,A,C,K,space,W,D};
-for(int index=0;index<=9;index++){
-  byte_transmit(response[index]);
-}//for
-}//rd_detected
-else{nack_response();}
+int response={
+    E,P,S,space,
+    A,C,K,space,
+    W,D,space,
+    E,P,S,E,N,D
+};
+for(int index=0;index<=16;index++){byte_transmit(response[index]);}//for 
+}//wd_detected
+else{
+  int response1[]={E,P,S,space};      for(int index=0;index<=3;index++){byte_transmit(response[index]);}//for
+  nack_response();
+  int response2[]={space,E,P,S,E,N,D};for(int index=0;index<=6;index++){byte_transmit(response[index]);}//for
+}//else
 return 0;
 }//wd_check
 
@@ -766,7 +782,8 @@ return 0;
 
 //set function parameters
 //int epscurrenttime[]={h,m,s,u};
-//{SFP CURRENTTIME hhhhhmmssuuu} -> {ACK SFP}OR{NACK SFP}   
+//{SFP CURRENTTIME hhhhhmmssuuu} -> {ACK SFP}OR{NACK SFP}
+//{SFP GROUNDSTATION}->{EPS ACK EPSEND}
 int sfp_check(){//sfp_check
 if(
   (receive_symbol[0 ]==S)&&(receive_symbol[1]==F)&&(receive_symbol[2 ]==P)&&(receive_symbol[3 ]==space)&&
