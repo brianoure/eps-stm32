@@ -68,6 +68,9 @@ int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
 //OK.....data
 int eps_data[500]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
 
+//
+int groundstation[200];
+
 
 //OK
 int ascii_to_dec(int x){
@@ -214,6 +217,20 @@ byte_transmit(N);byte_transmit(A);byte_transmit(C);byte_transmit(K);
 return 0;
 }//nack_response
 
+//OK
+int epsend_response(){//epsend_response
+if(1/*review TX ACTIVE*/){//if
+byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(E);byte_transmit(N);byte_transmit(D);
+}//if
+}//epsend_response
+
+//OK
+int eps_response(){//epsend_response
+if(1/*review TX ACTIVE*/){//if
+byte_transmit(E);byte_transmit(P);byte_transmit(S);
+}//if
+}//epsend_response
+
 /***********************************************COMMANDS********************************************/
 //COMMAND1
 //OK
@@ -263,61 +280,93 @@ return 0;
 
 //COMMAND2
 //OK
-//{GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd EPSEND}
+//{GD PAUSE}->{EPS ACK SPC ddddddd IPC ddddddd EPSEND}or{EPS NACK GD EPSEND} Change symbol_pause_count and intermission_pause_count
+//{GD GNDSTN}->{EPS ACK GNDSTN s*200 EPSEND}or{EPS NACK GD EPSEND}
 int gd_check(){
-if(
-(receive_symbol[0]==G)&&(receive_symbol[1]==D)&&(receive_symbol[2]==space)&&
-(receive_symbol[3]==E)&&(receive_symbol[4]==P)&&(receive_symbol[5]==S)&&
-/*review TX ACTIVE*/
-){//gd detected
-int response_array[]={
-A,C,K,space,
-S,P,C,space,
-dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
-I,P,C,space,
-dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7
-};
-for(int index=0;index<=26;index++){//for
-byte_transmit((response_array[index]));
-}//for
+int gd=(int)((receive_symbol[0]==G)&&(receive_symbol[1]==D));
+int gd_pause=(int)(
+                  gd&&(receive_symbol[2]==space)&&
+                  (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==U)&&(receive_symbol[6]==S)&&(receive_symbol[7]==E)
+);
+int gd_gndstn=(int)(
+                   gd&&(receive_symbol[2]==space)&&
+                   (receive_symbol[3]==G)&&(receive_symbol[4]==N)&&(receive_symbol[5]==D)&&
+                   (receive_symbol[6]==S)&&(receive_symbol[7]==T)&&(receive_symbol[8]==N)
+);
+if(gd_pause || gd_gndstn){//gd detected
+if(gd_pause ){//pause
+  int response_array[]={
+  A,C,K,space,
+  S,P,C,space,
+  dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
+  I,P,C,space,
+  dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7
+  };
+  for(int index=0;index<=26;index++){byte_transmit((response_array[index]));}//for
+  byte_transmit(space);
+  epsend_response();
+}//pause
+if(gd_gndstn){//gndstn
+  int response_array[]={A,C,K,space,G,N,D,S,T,N,space};
+  for(int index=0;index<=10 ;index++){byte_transmit((response_array[index]));}//for
+  for(int index=0;index<=199;index++){byte_transmit((groundstation[index]));}//for
+  epsend_response();
+}//gndstn
 }//gd detected
-else{nack_response();}
+else{
+  eps_response();
+  byte_transmit(space);
+  nack_response();
+  byte_transmit(G);byte_transmit(D);
+  byte_transmit(space);
+  epsend_response();
+}//else
 return 0;
 }//gd_check
 
 //COMMAND3
 //OK
-//{PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
+//{PD PAUSE SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{EPS NACK PD EPSEND}
+//{PD GNDSTN aa sssssssssssss}->{EPS ACK PD GNDSTN}or{EPS NACK PD EPSEND}
 int pd_check(){
-if(
-(receive_symbol[0 ]==P)&&(receive_symbol[1 ]==D)&&(receive_symbol[2 ]==space)&&
-(receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)&&(receive_symbol[6 ]==space)&&
-(receive_symbol[7 ]==S)&&(receive_symbol[8 ]==P)&&(receive_symbol[9 ]==C)&&(receive_symbol[10]==space)&&
-(receive_symbol[19]==I)&&(receive_symbol[20]==P)&&(receive_symbol[21]==C)&&(receive_symbol[22]==space)&&
-/*review TX ACTIVE*/
-){//pd detected
-symbol_pause_count=((ascii_to_dec(receive_symbol[11])*1000000)+
-                    (ascii_to_dec(receive_symbol[12])*100000 )+
-                    (ascii_to_dec(receive_symbol[13])*10000  )+
-                    (ascii_to_dec(receive_symbol[14])*1000   )+
-                    (ascii_to_dec(receive_symbol[15])*100    )+
-                    (ascii_to_dec(receive_symbol[16])*10     )+
-                     ascii_to_dec(receive_symbol[17])        );
-intermission_pause_count=((ascii_to_dec(receive_symbol[23])*1000000)+
-                          (ascii_to_dec(receive_symbol[24])*100000 )+
-                          (ascii_to_dec(receive_symbol[25])*10000  )+
-                          (ascii_to_dec(receive_symbol[26])*1000   )+
-                          (ascii_to_dec(receive_symbol[27])*100    )+
-                          (ascii_to_dec(receive_symbol[28])*10     )+
-                           ascii_to_dec(receive_symbol[29])        );
-int response_array[31]={E,P,S,space,
-                        A,C,K,space,
-                        P,D,space,
-                        S,P,C,space,
-                        I,P,C};
-for(int symbol_index=0;symbol_index<=17;symbol_index++){//for
-  byte_transmit((response_array[symbol_index]));
-}//for
+int pd=(int)((receive_symbol[0]==P)&&(receive_symbol[1]==D));
+int pd_pause=(int)(
+    pd&&(receive_symbol[2]==space)&&
+    (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==U)(receive_symbol[6]==S)&&(receive_symbol[7]==E)
+);
+int pd_gndstn=(int)(
+    pd&&(receive_symbol[2]==space)&&
+    (receive_symbol[9 ]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
+    (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)
+);
+int spcipcvalid=(int)(
+    pd&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&
+);
+if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
+  if(pd_pause && spcipcvalid){
+  symbol_pause_count=((ascii_to_dec(receive_symbol[13])*1000000)+
+                      (ascii_to_dec(receive_symbol[14])*100000 )+
+                      (ascii_to_dec(receive_symbol[15])*10000  )+
+                      (ascii_to_dec(receive_symbol[16])*1000   )+
+                      (ascii_to_dec(receive_symbol[17])*100    )+
+                      (ascii_to_dec(receive_symbol[18])*10     )+
+                       ascii_to_dec(receive_symbol[19])        );
+  intermission_pause_count=((ascii_to_dec(receive_symbol[25])*1000000)+
+                            (ascii_to_dec(receive_symbol[26])*100000 )+
+                            (ascii_to_dec(receive_symbol[27])*10000  )+
+                            (ascii_to_dec(receive_symbol[28])*1000   )+
+                            (ascii_to_dec(receive_symbol[29])*100    )+
+                            (ascii_to_dec(receive_symbol[30])*10     )+
+                             ascii_to_dec(receive_symbol[31])        );
+  eps_response();byte_transmit(space);
+  ack_response();byte_transmit(space);
+  byte_transmit(P);byte_transmit(D);
+  epsens_response();
+  }//pause
+  if(pd_gndstn){
+  int index=((ascii_to_dec(receive_symbol[11])*10)+(ascii_to_dec(receive_symbol[12]));
+  *28may2024**
+  }//gndstn
 }//pd detected
 else{nack_response();}
 return 0;
@@ -325,6 +374,7 @@ return 0;
 
 
 //OK
+//COMMAND 4
 //{RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
 //int eps_data[100]={E,P,S,space,ACK,space,A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY}, default after powering up
 int rd_check(){
@@ -342,7 +392,7 @@ return 0;
 
 
 //OK
-//OverWrite bytes of random data using: A-Z,hyphen,space,plus,stop(28 symbols) inclusive of start and edit points. Don't exceed 499. Careful of overwrite
+//OverWrite bytes of random data using: A-Z,hyphen,space,plus,stop(30 symbols) inclusive of start and edit points. Don't exceed 499. Careful of overwrite
 //{WD EPS sss eee *********}->{EPS ACK WD EPSEND}}or{EPS NACK WD EPSEND}
 int wd_check(){//wdcheck
 int inclusivestart=(ascii_to_dec(receive_symbol[7 ])*100)+(ascii_to_dec(receive_symbol[7 ])*10)+(ascii_to_dec(receive_symbol[7 ]));
@@ -356,8 +406,8 @@ if(
 validstartindex && withinbounds
 ){//wd detected
 for(int index=inclusivestart;index<=inclusiveend;index++){//for
-  eps_data[index]=receive_symbol[datastartindex];
-  datastartindex+1;
+eps_data[index]=receive_symbol[datastartindex];
+datastartindex+1;
 }//for...overwrite the data memory
 int response={
     E,P,S,space,
@@ -368,12 +418,16 @@ int response={
 for(int index=0;index<=16;index++){byte_transmit(response[index]);}//for 
 }//wd_detected
 else{
-  int response1[]={E,P,S,space};      for(int index=0;index<=3;index++){byte_transmit(response[index]);}//for
+  int response1[]={E,P,S,space};
+  for(int index=0;index<=3;index++){byte_transmit(response[index]);}//for
   nack_response();
-  int response2[]={space,E,P,S,E,N,D};for(int index=0;index<=6;index++){byte_transmit(response[index]);}//for
+  int response2[]={space,W,D,space,E,P,S,E,N,D};
+  for(int index=0;index<=6;index++){byte_transmit(response[index]);}//for
 }//else
 return 0;
 }//wd_check
+
+
 
 //OK
 //{SON PYLD}or{SON ADCS}or{SON GCS}->{ACK}or{NACK}
@@ -398,6 +452,11 @@ else{nack_response();}
 return 0;
 }//son_check
 
+
+
+
+
+
 //OK
 //{SOF PYLD}or{SOF ADCS}or{SOF GCS}->{ACK}or{NACK}
 int sof_check(){
@@ -420,6 +479,11 @@ if(
 else{nack_response();}
 return 0;
 }//sof_check
+
+
+
+
+
 
 
 //OK
@@ -577,6 +641,10 @@ return 0;
 }//sm_check
 
 
+
+
+
+
 //OK
 //GM CCU        -> 
 //GM DEPLOYFUSE ->
@@ -679,6 +747,10 @@ return 0;
 
 
 
+
+
+
+
 //OK
 //{GSC}->{EPS ACK GSC EPS MASTER}->{}->{END}
 //mycounter_64bit
@@ -713,6 +785,9 @@ return 0;
 
 
 
+
+
+
 //OK
 //SSC hhhhhhhhhhhhhhhh END
 int ssc_check(){
@@ -733,6 +808,9 @@ if(
 else{nack_response();}//else
 return 0;
 }//ssc_check
+
+
+
 
 
 //GFP CURRENTTIME -> ACK hhhhhmmssuuu 
@@ -776,6 +854,9 @@ for(int index=0;index<=12;index++){byte_transmit(response[index]);}
 else{nack_response();byte_transmit(space);byte_transmit(G);byte_transmit(F);byte_transmit(P);}
 return 0;
 }//gfp_check
+
+
+
 
 
 
