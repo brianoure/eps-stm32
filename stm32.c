@@ -1,3 +1,5 @@
+//location variables-ground stations and observation points
+
 //memory saving might be required
 //Commands called by ASCII
 
