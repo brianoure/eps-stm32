@@ -1190,31 +1190,46 @@ int transmit_bit_position=0;
 
 int executeframe(){
 //action
-if((receive_symbol[0]==F )&&(receive_symbol[1]==O)&&(receive_symbol[2]==N )&&(receive_symbol[3]== )){
-//action&change status
-}
-if((receive_symbol[0]== )&&(receive_symbol[1]== )&&(receive_symbol[2]== )&&(receive_symbol[3]== )){
-//action&change status
-}
-if((receive_symbol[0]== )&&(receive_symbol[1]== )&&(receive_symbol[2]== )&&(receive_symbol[3]== )){
-//action&change status
-}
+ping_check();
+gd_check();
+pd_check();
+rd_check();
+wd_check();
+son_check();
+sof_check();
+sm_check();
+gm_check();
+gsc_check();
+ssc_check();
+gfp_check();
+sfp_check();
+fof_check();
+gostm_check();
+//gstlm_check();
+ken_check();
+kdis_check();
 return 0;
 }//executeframe
 
 
-int shiftleftstore(int value){
-for(int index=0;index<=158;index++){receive[index]=receive[index+1];};
-receive[159]=value;
+int shiftleftstore(int storevalue){
+for(int index=0;index<=398;index++){receive_binary[index]=receive_binary[index+1];};
+receive[399]=storevalue;
 return 0;
 }//shiftleftstore
 
 int main(){///main
 while(1){//while
-//receive raw binary
-int skip=0;
-if(skip==0,RXA()==, RXB()==, RXC()==){shiftleftstore(0);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
-if(skip==0,RXA()==, RXB()==, RXC()==){shiftleftstore(1);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
+    //receive raw binary
+    int skip=0;
+    int bit_zero_incoming=(int)(
+                               ()&&()&&()&&()
+                               );
+    int bit_one_incoming =(int)(
+                               ()&&()&&()&&()
+                               );
+    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
+    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
 if(skip==0,RXA()==, RXB()==, RXC()==){                                 while(RXA()==, RXB()==, RXC()==);skip=1;}/*intermission*/
 }//while
 }//main
