@@ -1,7 +1,7 @@
 //location variables-ground stations and observation points
 
 //memory saving might be required
-//Commands called by ASCII
+//Commands received and transmitted in ASCII
 
 //hex=dec,cmd name, src, dest
 //0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT EPS LIVE}or{NACK}
@@ -29,7 +29,7 @@
 int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
-//OK
+//OK.....needed?
 int payload_status=0;
 int adcs_status=0;
 //int obc_status=0;
@@ -53,6 +53,7 @@ int dec_ipc6=intermission_pause_count//10;
 int dec_ipc7=intermission_pause_count;
 
 //OK
+//ASCII codes
 int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
 int six =54; int seven=55; int eight=56; int nine=57;
 int A=65;int B=66;int C=67;int D=68;int E=69;int F=70;int G=71;int H=72;int I=73;int J=74;
@@ -68,9 +69,9 @@ int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
 //OK.....data
 int eps_data[500]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
 
-//
+//OK initialize
 int groundstation[200];
-
+for(int index=0;index<=199;index++){grounstation[index]=0;}
 
 //OK
 int ascii_to_dec(int x){
@@ -160,20 +161,22 @@ for(int index=0;index<=49 ;index++){transmit_symbol[index]=0;}
 
 
 //OK
+//MSB(left) to LSB(right)
 int mycounter_64bit[]={0,0,0,0,0,0,0,0};
 
 
 //OK
+//actual time
 int epscurrenttime[]={0,0,0,0};
 
 //OK
 int bit_transmit(int value){//bit_transmit
-if(value){
+if(value){//if 1
   /*review TX VALUE 1*/;
   //for(int x=0;x<255;x++){for(int x=0;x<255;x++){for(int x=0;x<255;x++){}}}
   for(int i=0;i<=symbol_pause_count;i++){}//for.... possible unsupported count value
 }//if 1
-if(!value){
+if(!value){//if 0
   /*review TX VALUE 0*/;
   for(int i=0;i<=symbol_pause_count;i++){};
 }//if 0
@@ -194,8 +197,12 @@ return 0;
 int receive_binary_to_receive_symbol(){
 for(int symbol_index=0;symbol_index<=49;symbol_index++){
   int sum=0;
-  for(int leftshift=7;leftshift>=0;leftshift--){sum=sum+(receive_binary[(symbol*8)+(7-leftshift)]*((int)(1<<leftshift)));}//for
-  receive_symbol[symbol_index]=sum;
+  for(int leftshift=7;leftshift>=0;leftshift--){//for
+    sum = sum + ( 
+                receive_binary[ (symbol*8)+(7-leftshift) ] * ((int)(1<<leftshift))
+                );
+  }//for
+  receive_symbol[symbol_index] = sum;
 }//for
 return 0;
 }//receive_binary_to_receive_symbol
@@ -203,7 +210,7 @@ return 0;
 
 //OK
 int ack_response(){//ack response
-if(1/*review TX ACTIVE*/){
+if(1){/*review TX ACTIVE*/
 byte_transmit(A);byte_transmit(C);byte_transmit(K);
 }//if
 return 0;
@@ -211,7 +218,7 @@ return 0;
 
 //OK
 int nack_response(){//nack_response
-if(1/*review TX ACTIVE*/){//if
+if(1){/*review TX ACTIVE*/
 byte_transmit(N);byte_transmit(A);byte_transmit(C);byte_transmit(K);
 }//if
 return 0;
@@ -219,28 +226,27 @@ return 0;
 
 //OK
 int epsend_response(){//epsend_response
-if(1/*review TX ACTIVE*/){//if
+if(1){/*review TX ACTIVE*/
 byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(E);byte_transmit(N);byte_transmit(D);
 }//if
 }//epsend_response
 
 //OK
 int eps_response(){//epsend_response
-if(1/*review TX ACTIVE*/){//if
+if(1){/*review TX ACTIVE*/
 byte_transmit(E);byte_transmit(P);byte_transmit(S);
 }//if
 }//epsend_response
 
-/***********************************************COMMANDS********************************************/
+/******************************************************************COMMANDS*********************************************************************************/
 //COMMAND1
 //OK
 //{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhhmmssuuu EPSEND} or "just stay quiet" 
 int ping_check(){//ping response
 if(
 (receive_symbol[0]==P)&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&(receive_symbol[4]==space)&&
-(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)&&
-/*review TX ACTIVE*/
-){//ping detected
+(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)
+){//ping detected 
 int h1= (int)(epscurrenttime[0]/10000);
 int h2=((int)(epscurrenttime[0]/1000))-(h1*10000);
 int h3=((int)(epscurrenttime[0]/100 ))-(h1*10000)-(h2*1000);
@@ -252,7 +258,7 @@ int s1= (int)(epscurrenttime[2]/10);
 int s2=      (epscurrenttime[2])-(s1*10);;
 int u1= (int)(epscurrenttime[3]/100  );
 int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
-int u3=      (epscurrenttime[3]  )   -(u1*100)-(u2*10);
+int u3=      (epscurrenttime[3]     )-(u1*100)-(u2*10);
 int response_array[]={
 E,P,S,space,
 A,C,K,space,
@@ -272,11 +278,16 @@ dec_to_ascii(u2),
 dec_to_ascii(u3),space,
 E,P,S,E,N,D
 };
-for(int index=0;index<=30;index++){byte_transmit((response_array[index]));}//for
+for(int index=0;index<=41;index++){byte_transmit((response_array[index]));}//for
 }//ping detected
 //else{nack_response();}//just stay quiet
 return 0;
 }//ping check
+
+
+
+
+
 
 //COMMAND2
 //OK
@@ -323,6 +334,15 @@ else{
 }//else
 return 0;
 }//gd_check
+
+
+
+
+
+
+
+
+
 
 //COMMAND3
 //OK
@@ -1188,8 +1208,7 @@ int statusframebitnumber=0;
 int transmit_bit_position=0;
 
 
-int executeframe(){
-//action
+int executeframe(){//action
 ping_check();
 gd_check();
 pd_check();
@@ -1218,6 +1237,10 @@ receive[399]=storevalue;
 return 0;
 }//shiftleftstore
 
+
+
+
+//entry point
 int main(){///main
 while(1){//while
     //receive raw binary
