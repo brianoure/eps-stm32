@@ -340,7 +340,9 @@ int pd_gndstn=(int)(
     (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)
 );
 int spcipcvalid=(int)(
-    pd&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&&&(receive_symbol[2]==space)&&
+    pd&&(receive_symbol[9]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
+    (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)&&
+    (receive_symbol[2]==space)&&(receive_symbol[12]==space)&&(receive_symbol[20]==space)
 );
 if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
   if(pd_pause && spcipcvalid){
@@ -360,15 +362,28 @@ if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
                              ascii_to_dec(receive_symbol[31])        );
   eps_response();byte_transmit(space);
   ack_response();byte_transmit(space);
-  byte_transmit(P);byte_transmit(D);
+  byte_transmit(P);byte_transmit(D);byte_transmit(space);
+  byte_transmit(P);byte_transmit(A);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);
   epsens_response();
   }//pause
   if(pd_gndstn){
   int index=((ascii_to_dec(receive_symbol[11])*10)+(ascii_to_dec(receive_symbol[12]));
-  *28may2024**
+  for(int startindex=13;startindex<=25;startindex++){
+  groundstation[index];
+  }//for
+  eps_response();byte_transmit(space);
+  ack_response();byte_transmit(space);
+  byte_transmit(P);byte_transmit(D);byte_transmit(space);
+  byte_transmit(G);byte_transmit(N);byte_transmit(D);byte_transmit(S);byte_transmit(T);byte_transmit(N);byte_transmit(space);
+  epsend_response();
   }//gndstn
 }//pd detected
-else{nack_response();}
+else{
+  eps_response();byte_transmit(space);
+  nack_response();byte_transmit(space);
+  byte_transmit(P);byte_transmit(D);byte_transmit(space);
+  epsend_response();
+}//else
 return 0;
 }//pd_check
 
