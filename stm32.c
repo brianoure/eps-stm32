@@ -1228,9 +1228,9 @@ while(1){//while
     int bit_one_incoming =(int)(
                                ()&&()&&()&&()
                                );
-    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
-    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while(RXA()==, RXB()==, RXC()==);skip=1;}
-if(skip==0,RXA()==, RXB()==, RXC()==){                                 while(RXA()==, RXB()==, RXC()==);skip=1;}/*intermission*/
+    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}
+    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}
+    while(  (1)&&(1)&&(1)  ){}/*intermission*/
 }//while
 }//main
 
