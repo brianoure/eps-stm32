@@ -287,8 +287,6 @@ return 0;
 
 
 
-
-
 //COMMAND2
 //OK
 //{GD PAUSE}->{EPS ACK SPC ddddddd IPC ddddddd EPSEND}or{EPS NACK GD EPSEND} Change symbol_pause_count and intermission_pause_count
@@ -334,11 +332,6 @@ else{
 }//else
 return 0;
 }//gd_check
-
-
-
-
-
 
 
 
@@ -1251,9 +1244,12 @@ while(1){//while
     int bit_one_incoming =(int)(
                                ()&&()&&()&&()
                                );
-    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}
-    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}
-    while(  (1)&&(1)&&(1)  ){}/*intermission*/
+    int pause_incoming   =(int)(
+                               ()&&()&&()&&()
+                               );
+    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}/*bit 0*/
+    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}/*bit 1*/
+    if( (skip==0) && bit_one_incoming  ){                                 while( (1)&&(1)&&(1) ){};skip=1;}/*intermission*/
 }//while
 }//main
 
