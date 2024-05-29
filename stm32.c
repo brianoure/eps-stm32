@@ -167,7 +167,7 @@ int mycounter_64bit[]={0,0,0,0,0,0,0,0};
 
 //OK
 //actual time
-int epscurrenttime[]={0,0,0,0};
+int epscurrenttime[]={0,0,0,0};//hours,minutes,seconds,microseconds
 
 //OK
 int bit_transmit(int value){//bit_transmit
