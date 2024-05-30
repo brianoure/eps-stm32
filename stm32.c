@@ -338,27 +338,27 @@ return 0;
 
 
 //COMMAND3
-//OK
+//OK1
 //{PD PAUSE SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{EPS NACK PD EPSEND}
 //{PD GNDSTN aa sssssssssssss}->{EPS ACK PD GNDSTN}or{EPS NACK PD EPSEND}
 int pd_check(){
 int pd=(int)((receive_symbol[0]==P)&&(receive_symbol[1]==D));
 int pd_pause=(int)(
     pd&&(receive_symbol[2]==space)&&
-    (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==U)(receive_symbol[6]==S)&&(receive_symbol[7]==E)
+    (receive_symbol[3]==P)&&(receive_symbol[4]==A)&&(receive_symbol[5]==U)&&(receive_symbol[6]==S)&&(receive_symbol[7]==E)
 );
 int pd_gndstn=(int)(
     pd&&(receive_symbol[2]==space)&&
-    (receive_symbol[9 ]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
-    (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)
+    (receive_symbol[9 ]==G)&&(receive_symbol[10]==N)&&(receive_symbol[11]==D)&&
+    (receive_symbol[21]==S)&&(receive_symbol[22]==T)&&(receive_symbol[23]==N)
 );
 int spcipcvalid=(int)(
-    pd&&(receive_symbol[9]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
+    (receive_symbol[9 ]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
     (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)&&
-    (receive_symbol[2]==space)&&(receive_symbol[12]==space)&&(receive_symbol[20]==space)
+    (receive_symbol[2 ]==space)&&(receive_symbol[12]==space)&&(receive_symbol[20]==space)
 );
 if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
-  if(pd_pause && spcipcvalid){
+  if(pd_pause && spcipcvalid){//pd pause && spcipcvalid
   symbol_pause_count=((ascii_to_dec(receive_symbol[13])*1000000)+
                       (ascii_to_dec(receive_symbol[14])*100000 )+
                       (ascii_to_dec(receive_symbol[15])*10000  )+
@@ -373,23 +373,20 @@ if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
                             (ascii_to_dec(receive_symbol[29])*100    )+
                             (ascii_to_dec(receive_symbol[30])*10     )+
                              ascii_to_dec(receive_symbol[31])        );
-  eps_response();byte_transmit(space);
-  ack_response();byte_transmit(space);
-  byte_transmit(P);byte_transmit(D);byte_transmit(space);
-  byte_transmit(P);byte_transmit(A);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);
-  epsens_response();
-  }//pause
-  if(pd_gndstn){
-  int index=((ascii_to_dec(receive_symbol[11])*10)+(ascii_to_dec(receive_symbol[12]));
+  eps_response();byte_transmit(space);ack_response();byte_transmit(space);byte_transmit(P);byte_transmit(D);byte_transmit(space);
+  byte_transmit(P);byte_transmit(A);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);epsend_response();
+  }//pd pause && spcipcvalid
+  if(pd_gndstn){//pd_gndstn
+  int index=(ascii_to_dec(receive_symbol[11])*10)+(ascii_to_dec(receive_symbol[12]));
   for(int startindex=13;startindex<=25;startindex++){
-  groundstation[index];
+  groundstation[startindex];
   }//for
   eps_response();byte_transmit(space);
   ack_response();byte_transmit(space);
   byte_transmit(P);byte_transmit(D);byte_transmit(space);
   byte_transmit(G);byte_transmit(N);byte_transmit(D);byte_transmit(S);byte_transmit(T);byte_transmit(N);byte_transmit(space);
   epsend_response();
-  }//gndstn
+  }//pd_gndstn
 }//pd detected
 else{
   eps_response();byte_transmit(space);
