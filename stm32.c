@@ -340,7 +340,7 @@ return 0;
 //COMMAND3
 //OK1
 //{PD PAUSE SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{EPS NACK PD EPSEND}
-//{PD GNDSTN aa sssssssssssss}->{EPS ACK PD GNDSTN}or{EPS NACK PD EPSEND}
+//{PD GNDSTN xxx yyy sssssssssssss}->{EPS ACK PD GNDSTN}or{EPS NACK PD EPSEND}
 int pd_check(){
 int pd=(int)((receive_symbol[0]==P)&&(receive_symbol[1]==D));
 int pd_pause=(int)(
@@ -377,29 +377,38 @@ if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
   byte_transmit(P);byte_transmit(A);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);epsend_response();
   }//pd pause && spcipcvalid
   if(pd_gndstn){//pd_gndstn
-  int index=(ascii_to_dec(receive_symbol[11])*10)+(ascii_to_dec(receive_symbol[12]));
-  for(int startindex=13;startindex<=25;startindex++){
-  groundstation[startindex];
-  }//for
-  eps_response();byte_transmit(space);
-  ack_response();byte_transmit(space);
-  byte_transmit(P);byte_transmit(D);byte_transmit(space);
-  byte_transmit(G);byte_transmit(N);byte_transmit(D);byte_transmit(S);byte_transmit(T);byte_transmit(N);byte_transmit(space);
-  epsend_response();
+     int inclusivestartindex=(
+                             (ascii_to_dec(receive_symbol[10])*100)+
+                             (ascii_to_dec(receive_symbol[11])*10 )+
+                             (ascii_to_dec(receive_symbol[12])    )
+     );
+     int inclusiveendindex=(
+                             (ascii_to_dec(receive_symbol[14])*100)+
+                             (ascii_to_dec(receive_symbol[15])*10 )+
+                             (ascii_to_dec(receive_symbol[16])    )
+     );
+     int receivesymbolstartindex=18;
+     for(int index=inclusivestartindex;index<=inclusiveendindex;index++){//for
+     groundstation[index]=receive_symbol[receivesymbolstartindex];
+     receivesymbolstartindex=receivesymbolstartindex+1;
+     }//for
+     eps_response();byte_transmit(space);
+     ack_response();byte_transmit(space);
+     byte_transmit(P);byte_transmit(D);byte_transmit(space);
+     byte_transmit(G);byte_transmit(N);byte_transmit(D);byte_transmit(S);byte_transmit(T);byte_transmit(N);byte_transmit(space);
+     epsend_response();
   }//pd_gndstn
 }//pd detected
-else{
-  eps_response();byte_transmit(space);
-  nack_response();byte_transmit(space);
-  byte_transmit(P);byte_transmit(D);byte_transmit(space);
-  epsend_response();
+else{//else
+  eps_response();byte_transmit(space);nack_response();byte_transmit(space);
+  byte_transmit(P);byte_transmit(D);byte_transmit(space);epsend_response();
 }//else
 return 0;
 }//pd_check
 
 
 //OK
-//COMMAND 4
+//COMMAND 4 RD long term
 //{RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
 //int eps_data[100]={E,P,S,space,ACK,space,A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,SPACE,hyphen,AGENCY}, default after powering up
 int rd_check(){
@@ -411,18 +420,18 @@ for(int index=0;index<=99;index++){
   byte_transmit((eps_data[index]));
 }//for..transmit entire 100 byte array
 }//rd_detected
-else{nack_response();}
+else{eps_response();byte_transmit(space);nack_response();epsend_response();}
 return 0;
 }//rd_check
 
 
 //OK
+//COMMAND 5 WD long term
 //OverWrite bytes of random data using: A-Z,hyphen,space,plus,stop(30 symbols) inclusive of start and edit points. Don't exceed 499. Careful of overwrite
 //{WD EPS sss eee *********}->{EPS ACK WD EPSEND}}or{EPS NACK WD EPSEND}
 int wd_check(){//wdcheck
 int inclusivestart=(ascii_to_dec(receive_symbol[7 ])*100)+(ascii_to_dec(receive_symbol[7 ])*10)+(ascii_to_dec(receive_symbol[7 ]));
 int inclusiveend  =(ascii_to_dec(receive_symbol[11])*100)+(ascii_to_dec(receive_symbol[12])*10)+(ascii_to_dec(receive_symbol[13]));
-int datastartindex=15;
 int validstartindex=(int)((inclusivestart<=inclusiveend)&&(inclusivestart<499));
 int withinbounds=(int)(inclusiveend<=499);
 if(
@@ -430,6 +439,7 @@ if(
 (receive_symbol[3 ]==E)&&(receive_symbol[4 ]==P)&&(receive_symbol[5 ]==S)&&(receive_symbol[6 ]==space)&&
 validstartindex && withinbounds
 ){//wd detected
+int datastartindex=15;
 for(int index=inclusivestart;index<=inclusiveend;index++){//for
 eps_data[index]=receive_symbol[datastartindex];
 datastartindex+1;
