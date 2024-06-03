@@ -25,18 +25,18 @@
 //0x31=49,KEN  ,Kill ENable                    ,GCS   ,EPS   , {KEN}  ->{ACK KEN} or{NACK}
 //0x32=50,KDIS ,Kill DISable                   ,GCS   ,EPS   , {KDIS} ->{ACK KDIS}or{NACK}
 
-//OK....parameter
+//OK1....parameter
 int symbol_pause_count=1000000;
 int intermission_pause_count=1000000;
 
-//OK.....needed?
+//OK1.....needed?
 int payload_status=0;
 int adcs_status=0;
 //int obc_status=0;
 int comm_status=0;
 //int eps_status=0;
 
-//OK
+//OK1
 int dec_spc1=symbol_pause_count//1000000;
 int dec_spc2=symbol_pause_count//100000;
 int dec_spc3=symbol_pause_count//10000;
@@ -52,7 +52,7 @@ int dec_ipc5=intermission_pause_count//100;
 int dec_ipc6=intermission_pause_count//10;
 int dec_ipc7=intermission_pause_count;
 
-//OK
+//OK1
 //ASCII codes
 int zero=48; int one  =49; int two=50  ; int three=51; int four=52; int five=53;
 int six =54; int seven=55; int eight=56; int nine=57;
@@ -66,14 +66,14 @@ int K=75;int L=76;int M=77;int N=78;int O=79;int P=80;int Q=81;int R=82;int S=83
 int U=85;int V=86;int W=87;int X=88;int Y=89;int Z=90;
 **/
 
-//OK.....data
+//OK1.....data
 int eps_data[500]={A,F,D,E,V,S,A,T,space,K,E,N,Y,A,hyphen,S,P,A,C,E,hyphen,A,G,E,N,C,Y,space,E,P,S};
 
-//OK initialize
+//OK1 initialize
 int groundstation[200];
 for(int index=0;index<=199;index++){grounstation[index]=0;}
 
-//OK
+//OK1
 int ascii_to_dec(int x){
 if(x==zero ){return 0;}//if
 if(x==one  ){return 1;}//if
@@ -85,10 +85,11 @@ if(x==six  ){return 6;}//if
 if(x==seven){return 7;}//if
 if(x==eight){return 8;}//if
 if(x==nine ){return 9;}//if
+return 0;
 }//ascii_to_dec
 
 
-//OK
+//OK1
 int dec_to_ascii(int mydec){
 if(x==0){return zero; }//if
 if(x==1){return one;  }//if
@@ -104,8 +105,8 @@ return 0;
 }//dec_to_ascii
 
 
-//OK
-int dec_to_hex_in_ascii(int mydec){
+//OK1
+int dec_to_ascii_hex(int mydec){
 if(mydec==0 ){return zero; }//if
 if(mydec==1 ){return one;  }//if
 if(mydec==2 ){return two;  }//if
@@ -123,9 +124,9 @@ if(mydec==13){return D;    }//if
 if(mydec==14){return E;    }//if
 if(mydec==15){return F;    }//if
 return 0;
-}//dec_to_hex_in_ascii
+}//dec_to_ascii_hex
 
-//OK
+//OK1
 int ascii_hex_to_dec(int asciihex){
 if(asciihex==zero ){return 0; }
 if(asciihex==one  ){return 1; }
@@ -791,22 +792,22 @@ return 0;
 //mycounter_64bit
 int gsc_check(){
 if( (receive_symbol[0]==G)&&(receive_symbol[1]==S)&&(receive_symbol[2]==C) ){
-  int hex0 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[0]&&240))>>4));
-  int hex1 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[0]&&240))>>0));
-  int hex2 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[1]&&240))>>4));
-  int hex3 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[1]&&240))>>0));
-  int hex4 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[2]&&240))>>4));
-  int hex5 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[2]&&240))>>0));
-  int hex6 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[3]&&240))>>4));
-  int hex7 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[3]&&240))>>0));
-  int hex8 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[4]&&240))>>4));
-  int hex9 =dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[4]&&240))>>0));
-  int hex10=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[5]&&240))>>4));
-  int hex11=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[5]&&240))>>0));
-  int hex12=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[6]&&240))>>4));
-  int hex13=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[6]&&240))>>0));
-  int hex14=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[7]&&240))>>4));
-  int hex15=dec_to_hex_in_ascii((int)(((int)(mycounter_64bit[7]&&240))>>0));
+  int hex0 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[0]&&240))>>4));
+  int hex1 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[0]&&240))>>0));
+  int hex2 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[1]&&240))>>4));
+  int hex3 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[1]&&240))>>0));
+  int hex4 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[2]&&240))>>4));
+  int hex5 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[2]&&240))>>0));
+  int hex6 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[3]&&240))>>4));
+  int hex7 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[3]&&240))>>0));
+  int hex8 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[4]&&240))>>4));
+  int hex9 =dec_to_ascii_hex((int)(((int)(mycounter_64bit[4]&&240))>>0));
+  int hex10=dec_to_ascii_hex((int)(((int)(mycounter_64bit[5]&&240))>>4));
+  int hex11=dec_to_ascii_hex((int)(((int)(mycounter_64bit[5]&&240))>>0));
+  int hex12=dec_to_ascii_hex((int)(((int)(mycounter_64bit[6]&&240))>>4));
+  int hex13=dec_to_ascii_hex((int)(((int)(mycounter_64bit[6]&&240))>>0));
+  int hex14=dec_to_ascii_hex((int)(((int)(mycounter_64bit[7]&&240))>>4));
+  int hex15=dec_to_ascii_hex((int)(((int)(mycounter_64bit[7]&&240))>>0));
   int response[]={
                   A,C,K,space,
                   H,E,X,C,O,U,N,T,E,R,space,
