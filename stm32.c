@@ -200,7 +200,7 @@ for(int symbol_index=0;symbol_index<=49;symbol_index++){
   int sum=0;
   for(int leftshift=7;leftshift>=0;leftshift--){//for
     sum = sum + ( 
-                receive_binary[ (symbol*8)+(7-leftshift) ] * ((int)(1<<leftshift))
+                receive_binary[ (symbol_index*8)+(7-leftshift) ] * ((int)(1<<leftshift))
                 );
   }//for
   receive_symbol[symbol_index] = sum;
@@ -242,16 +242,16 @@ byte_transmit(E);byte_transmit(P);byte_transmit(S);
 /******************************************************************COMMANDS*********************************************************************************/
 //COMMAND1
 //OK
-//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhhmmssuuu EPSEND} or "just stay quiet" 
+//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhh-mm-ss-uuu EPSEND} or "just stay quiet" 
 int ping_check(){//ping response
 if(
 (receive_symbol[0]==P)&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&(receive_symbol[4]==space)&&
 (receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)
 ){//ping detected 
 int h1= (int)(epscurrenttime[0]/10000);
-int h2=((int)(epscurrenttime[0]/1000))-(h1*10000);
-int h3=((int)(epscurrenttime[0]/100 ))-(h1*10000)-(h2*1000);
-int h4=((int)(epscurrenttime[0]/10  ))-(h1*10000)-(h2*1000)-(h3*100);
+int h2=((int)(epscurrenttime[0]/1000))-(h1*10);
+int h3=((int)(epscurrenttime[0]/100 ))-(h1*100)-(h2*10);
+int h4=((int)(epscurrenttime[0]/10  ))-(h1*1000)-(h2*100)-(h3*10);
 int h5=((int)(epscurrenttime[0]     ))-(h1*10000)-(h2*1000)-(h3*100)-(h4*10);
 int m1= (int)(epscurrenttime[1]/10);
 int m2=      (epscurrenttime[1])-(m1*10);
@@ -269,17 +269,17 @@ dec_to_ascii(h1),
 dec_to_ascii(h2),
 dec_to_ascii(h3),
 dec_to_ascii(h4),
-dec_to_ascii(h5),
+dec_to_ascii(h5),hyphen,
 dec_to_ascii(m1),
-dec_to_ascii(m2),
+dec_to_ascii(m2),hyphen,
 dec_to_ascii(s1),
-dec_to_ascii(s2),
+dec_to_ascii(s2),hyphen,
 dec_to_ascii(u1),
 dec_to_ascii(u2),
 dec_to_ascii(u3),space,
 E,P,S,E,N,D
 };
-for(int index=0;index<=41;index++){byte_transmit((response_array[index]));}//for
+for(int index=0;index<=44;index++){byte_transmit((response_array[index]));}//for
 }//ping detected
 //else{nack_response();}//just stay quiet
 return 0;
@@ -1240,7 +1240,6 @@ return 0;
 
 
 
-
 //entry point
 int main(){///main
 while(1){//while
@@ -1255,9 +1254,22 @@ while(1){//while
     int pause_incoming   =(int)(
                                ()&&()&&()&&()
                                );
-    if( (skip==0) && bit_zero_incoming ){shiftleftstore(0);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}/*bit 0*/
-    if( (skip==0) && bit_one_incoming  ){shiftleftstore(1);executeframe();while( (1)&&(1)&&(1) ){};skip=1;}/*bit 1*/
-    if( (skip==0) && bit_one_incoming  ){                                 while( (1)&&(1)&&(1) ){};skip=1;}/*intermission*/
+    if( (skip==0) && bit_zero_incoming ){/*bit 0*/
+      shiftleftstore(0);
+      receive_binary_to_receive_symbol();
+      executeframe();
+      while( (1)&&(1)&&(1) ){};skip=1;
+    }/*bit 0*/
+    if( (skip==0) && bit_one_incoming  ){/*bit 1*/
+      shiftleftstore(1);
+      receive_binary_to_receive_symbol();
+      executeframe();
+      while( (1)&&(1)&&(1) ){};skip=1;
+    }/*bit 1*/
+    if( (skip==0) && pause_incoming    ){/*intermission*/
+      while( (1)&&(1)&&(1) ){};skip=1;
+    }/*intermission*/
 }//while
+return 0;
 }//main
 
