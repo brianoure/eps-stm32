@@ -242,46 +242,55 @@ byte_transmit(E);byte_transmit(P);byte_transmit(S);
 /******************************************************************COMMANDS*********************************************************************************/
 //COMMAND1
 //OK
-//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhh-mm-ss-uuu EPSEND} or "just stay quiet" 
+//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhh-mm-ss-uuu EPSEND} or {EPS NACK PING} 
 int ping_check(){//ping response
-if(
-(receive_symbol[0]==P)&&(receive_symbol[1]==I)&&(receive_symbol[2]==N)&&(receive_symbol[3]==G)&&(receive_symbol[4]==space)&&
-(receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)
-){//ping detected 
-int h1= (int)(epscurrenttime[0]/10000);
-int h2=((int)(epscurrenttime[0]/1000))-(h1*10);
-int h3=((int)(epscurrenttime[0]/100 ))-(h1*100)-(h2*10);
-int h4=((int)(epscurrenttime[0]/10  ))-(h1*1000)-(h2*100)-(h3*10);
-int h5=((int)(epscurrenttime[0]     ))-(h1*10000)-(h2*1000)-(h3*100)-(h4*10);
-int m1= (int)(epscurrenttime[1]/10);
-int m2=      (epscurrenttime[1])-(m1*10);
-int s1= (int)(epscurrenttime[2]/10);
-int s2=      (epscurrenttime[2])-(s1*10);;
-int u1= (int)(epscurrenttime[3]/100  );
-int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
-int u3=      (epscurrenttime[3]     )-(u1*100)-(u2*10);
-int response_array[]={
-E,P,S,space,
-A,C,K,space,
-A,F,D,E,V,hyphen,E,P,S,space,
-T,I,M,E,space,
-dec_to_ascii(h1),
-dec_to_ascii(h2),
-dec_to_ascii(h3),
-dec_to_ascii(h4),
-dec_to_ascii(h5),hyphen,
-dec_to_ascii(m1),
-dec_to_ascii(m2),hyphen,
-dec_to_ascii(s1),
-dec_to_ascii(s2),hyphen,
-dec_to_ascii(u1),
-dec_to_ascii(u2),
-dec_to_ascii(u3),space,
-E,P,S,E,N,D
-};
-for(int index=0;index<=44;index++){byte_transmit(response_array[index]);}//for
-}//ping detected
-//else{nack_response();}//just stay quiet
+    int ping=(int)(
+    (receive_symbol[0]==P)&&(receive_symbol[1]==I)&&
+    (receive_symbol[2]==N)&&(receive_symbol[3]==G)
+    );
+    if(ping){//if ping
+       if(
+       ping&&(receive_symbol[4]==space)&&
+       (receive_symbol[5]==E)&&(receive_symbol[6]==P)&&(receive_symbol[7]==S)
+       ){//if
+       int h1= (int)(epscurrenttime[0]/10000);
+       int h2=((int)(epscurrenttime[0]/1000))-(h1*10);
+       int h3=((int)(epscurrenttime[0]/100 ))-(h1*100)-(h2*10);
+       int h4=((int)(epscurrenttime[0]/10  ))-(h1*1000)-(h2*100)-(h3*10);
+       int h5=((int)(epscurrenttime[0]     ))-(h1*10000)-(h2*1000)-(h3*100)-(h4*10);
+       int m1= (int)(epscurrenttime[1]/10);
+       int m2=      (epscurrenttime[1])-(m1*10);
+       int s1= (int)(epscurrenttime[2]/10);
+       int s2=      (epscurrenttime[2])-(s1*10);;
+       int u1= (int)(epscurrenttime[3]/100  );
+       int u2=((int)(epscurrenttime[3]/10 ))-(u1*10 );
+       int u3=      (epscurrenttime[3]     )-(u1*100)-(u2*10);
+       int response_array[]={
+       E,P,S,space,
+       A,C,K,space,
+       A,F,D,E,V,hyphen,E,P,S,space,
+       T,I,M,E,space,
+       dec_to_ascii(h1),
+       dec_to_ascii(h2),
+       dec_to_ascii(h3),
+       dec_to_ascii(h4),
+       dec_to_ascii(h5),hyphen,
+       dec_to_ascii(m1),
+       dec_to_ascii(m2),hyphen,
+       dec_to_ascii(s1),
+       dec_to_ascii(s2),hyphen,
+       dec_to_ascii(u1),
+       dec_to_ascii(u2),
+       dec_to_ascii(u3),space,
+       E,P,S,E,N,D
+       };
+       for(int index=0;index<=44;index++){byte_transmit(response_array[index]);}//for
+       }//if
+       else{//else
+       byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(space);nack_response();
+       byte_transmit(P);byte_transmit(I);byte_transmit(N);byte_transmit(G);
+       }//else
+  }//if ping
 return 0;
 }//ping check
 
