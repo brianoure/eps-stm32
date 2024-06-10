@@ -316,30 +316,30 @@ int gd_check(){//gd_check
 	   if(gd_pause || gd_gndstn){//gd_pause or gd_gndstn
 	      if(gd_pause ){//gd_pause
 	        int response_array[]={
-          E,P,S,space,
-          A,C,K,space,
-          S,P,C,space,
-          dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
-          I,P,C,space,
-          dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7,space,
-		      E,P,S,E,N,D
-          };
-          for(int index=0;index<=37;index++){byte_transmit((response_array[index]));}//for
+                E,P,S,space,
+                A,C,K,space,
+                S,P,C,space,
+                dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
+                I,P,C,space,
+                dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7,space,
+		E,P,S,E,N,D
+                };
+                for(int index=0;index<=37;index++){byte_transmit((response_array[index]));}//for
 	      }//gd_pause
 	      if(gd_gndstn ){//gd_gndstn
-		      int response_array[]={
-			    E,P,S,space,A,C,K,space,
-			    G,N,D,S,T,N,space
-			    };
-          for(int index=0;index<=14 ;index++){byte_transmit((response_array[index]));}//for
-          for(int index=0;index<=199;index++){byte_transmit((groundstation [index]));}//for
-          byte_transmit(space);
-          epsend_response();
+		 int response_array[]={
+		 E,P,S,space,A,C,K,space,
+		 G,N,D,S,T,N,space
+		 };
+                for(int index=0;index<=14 ;index++){byte_transmit((response_array[index]));}//for
+                for(int index=0;index<=199;index++){byte_transmit((groundstation [index]));}//for
+                byte_transmit(space);
+                epsend_response();
 	      }//gd_gndstn
-	}//gd_pause or gd_gndstn
+	  }//gd_pause or gd_gndstn
 	else{//else gd fail
 	   byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(space);
-	   nack_response();byte_transmit(space);
+	   nack_response() ;byte_transmit(space);
 	   byte_transmit(G);byte_transmit(D);byte_transmit(space);
 	   epsend_response();
 	}//else gd fail
