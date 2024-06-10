@@ -279,7 +279,7 @@ dec_to_ascii(u2),
 dec_to_ascii(u3),space,
 E,P,S,E,N,D
 };
-for(int index=0;index<=44;index++){byte_transmit((response_array[index]));}//for
+for(int index=0;index<=44;index++){byte_transmit(response_array[index]);}//for
 }//ping detected
 //else{nack_response();}//just stay quiet
 return 0;
