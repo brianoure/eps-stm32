@@ -26,7 +26,7 @@
 //0x32=50,KDIS ,Kill DISable                   ,GCS   ,EPS   , {KDIS} ->{ACK KDIS}or{NACK}
 
 //OK1....parameter
-int symbol_pause_count=1000000;
+int binary_pause_count=1000000;
 int intermission_pause_count=1000000;
 
 //OK1.....needed?
@@ -37,13 +37,13 @@ int comm_status=0;
 //int eps_status=0;
 
 //OK1
-int dec_bpc1=symbol_pause_count//1000000;
-int dec_bpc2=symbol_pause_count//100000;
-int dec_bpc3=symbol_pause_count//10000;
-int dec_bpc4=symbol_pause_count//1000;
-int dec_bpc5=symbol_pause_count//100;
-int dec_bpc6=symbol_pause_count//10;
-int dec_bpc7=symbol_pause_count;
+int dec_bpc1=binary_pause_count//1000000;
+int dec_bpc2=binary_pause_count//100000;
+int dec_bpc3=binary_pause_count//10000;
+int dec_bpc4=binary_pause_count//1000;
+int dec_bpc5=binary_pause_count//100;
+int dec_bpc6=binary_pause_count//10;
+int dec_bpc7=binary_pause_count;
 int dec_ipc1=intermission_pause_count//1000000;
 int dec_ipc2=intermission_pause_count//100000;
 int dec_ipc3=intermission_pause_count//10000;
@@ -175,11 +175,11 @@ int bit_transmit(int value){//bit_transmit
 if(value){//if 1
   /*review TX VALUE 1*/;
   //for(int x=0;x<255;x++){for(int x=0;x<255;x++){for(int x=0;x<255;x++){}}}
-  for(int i=0;i<=symbol_pause_count;i++){}//for.... possible unsupported count value
+  for(int i=0;i<=binary_pause_count;i++){}//for.... possible unsupported count value
 }//if 1
 if(!value){//if 0
   /*review TX VALUE 0*/;
-  for(int i=0;i<=symbol_pause_count;i++){};
+  for(int i=0;i<=binary_pause_count;i++){};
 }//if 0
 /*review TX VALUE INTERMISSION*/;
 for(int i=0;i<=intermission_pause_count;i++){};//for intermission
@@ -373,7 +373,7 @@ int bpcipcvalid=(int)(
 );
 if( (pd_pause && bpcipcvalid) || pd_gndstn ){//pd detected
   if(pd_pause && bpcipcvalid){//pd pause && bpcipcvalid
-  symbol_pause_count=((ascii_to_dec(receive_symbol[13])*1000000)+
+  binary_pause_count=((ascii_to_dec(receive_symbol[13])*1000000)+
                       (ascii_to_dec(receive_symbol[14])*100000 )+
                       (ascii_to_dec(receive_symbol[15])*10000  )+
                       (ascii_to_dec(receive_symbol[16])*1000   )+
