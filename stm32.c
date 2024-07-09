@@ -242,7 +242,7 @@ byte_transmit(E);byte_transmit(P);byte_transmit(S);
 /******************************************************************COMMANDS*********************************************************************************/
 //COMMAND1
 //OK
-//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhh-mm-ss-uuu EPSEND} or {EPS NACK PING} 
+//{PING EPS}->{EPS ACK AFDEV-EPS TIME hhhhh-mm-ss-uuu EPSEND} or silence 
 int ping_check(){//ping response
     int ping=(int)(
     (receive_symbol[0]==P)&&(receive_symbol[1]==I)&&
@@ -287,8 +287,8 @@ int ping_check(){//ping response
        for(int index=0;index<=44;index++){byte_transmit(response_array[index]);}//for
        }//if
        else{//else
-       byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(space);nack_response();
-       byte_transmit(P);byte_transmit(I);byte_transmit(N);byte_transmit(G);
+       //byte_transmit(E);byte_transmit(P);byte_transmit(S);byte_transmit(space);nack_response();
+       //byte_transmit(space);byte_transmit(P);byte_transmit(I);byte_transmit(N);byte_transmit(G);
        }//else
   }//if ping
 return 0;
