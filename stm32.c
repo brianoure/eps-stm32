@@ -7,8 +7,8 @@
 //0x00=0 ,Ping ,check the subsystem status     ,Master,All   , {PING EPS}->{ACK AFDEVSAT EPS LIVE}or{NACK}
 //0x02=2 ,ACK  ,Acknowledge reply              ,ALL   ,Master, {ACK}//not applicable
 //0x03=3 ,NACK ,Not Acknowledge reply          ,ALL   ,Master, {NACK}//not applicable 
-//0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK SPC ddddddd IPC ddddddd}or{NACK}
-//0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
+//0x04=4 ,GD   ,Get parameter data from device ,Master,All   , {GD EPS}->{EPS ACK BPC ddddddd IPC ddddddd}or{NACK} //BPC-binary pause count
+//0x05=4 ,PD   ,Put parameter data to device   ,Master,All   , {PD EPS BPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{NACK}
 //0x06=6 ,RD   ,Read data                      ,Master,All   , {RD EPS}->{EPS ACK AFDEVSAT KENYA-SPACE-AGENCY}or{NACK}
 //0x07=7 ,WD   ,Write data                     ,Master,All   , {WD EPS ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss}->{EPS ACK WD}}or{NACK}
 //0x0b=11,SON  ,Switch ON subsystem            ,Master,EPS   , {SON PYLD}or{SON ADCS}or{SON GCS}->{ACK}or{NACK}
@@ -37,13 +37,13 @@ int comm_status=0;
 //int eps_status=0;
 
 //OK1
-int dec_spc1=symbol_pause_count//1000000;
-int dec_spc2=symbol_pause_count//100000;
-int dec_spc3=symbol_pause_count//10000;
-int dec_spc4=symbol_pause_count//1000;
-int dec_spc5=symbol_pause_count//100;
-int dec_spc6=symbol_pause_count//10;
-int dec_spc7=symbol_pause_count;
+int dec_bpc1=symbol_pause_count//1000000;
+int dec_bpc2=symbol_pause_count//100000;
+int dec_bpc3=symbol_pause_count//10000;
+int dec_bpc4=symbol_pause_count//1000;
+int dec_bpc5=symbol_pause_count//100;
+int dec_bpc6=symbol_pause_count//10;
+int dec_bpc7=symbol_pause_count;
 int dec_ipc1=intermission_pause_count//1000000;
 int dec_ipc2=intermission_pause_count//100000;
 int dec_ipc3=intermission_pause_count//10000;
@@ -299,7 +299,7 @@ return 0;
 
 //COMMAND2
 //OK
-//{GD PAUSE}->{EPS ACK SPC ddddddd IPC ddddddd EPSEND}or{EPS NACK GD EPSEND} Change symbol_pause_count and intermission_pause_count
+//{GD PAUSE}->{EPS ACK BPC ddddddd IPC ddddddd EPSEND}or{EPS NACK GD EPSEND} Change symbol_pause_count and intermission_pause_count
 //{GD GNDSTN}->{EPS ACK GNDSTN s*200 EPSEND}or{EPS NACK GD EPSEND}
 int gd_check(){//gd_check
     int gd=(int)((receive_symbol[0]==G)&&(receive_symbol[1]==D));
@@ -319,7 +319,7 @@ int gd_check(){//gd_check
                 E,P,S,space,
                 A,C,K,space,
                 S,P,C,space,
-                dec_spc1,dec_spc2,dec_spc3,dec_spc4,dec_spc5,dec_spc6,dec_spc7,space,
+                dec_bpc1,dec_bpc2,dec_bpc3,dec_bpc4,dec_bpc5,dec_bpc6,dec_bpc7,space,
                 I,P,C,space,
                 dec_ipc1,dec_ipc2,dec_ipc3,dec_ipc4,dec_ipc5,dec_ipc6,dec_ipc7,space,
 		E,P,S,E,N,D
@@ -353,7 +353,7 @@ return 0;
 
 //COMMAND3
 //OK1
-//{PD PAUSE SPC ddddddd IPC ddddddd}->{EPS ACK PD SPC IPC}or{EPS NACK PD EPSEND}
+//{PD PAUSE BPC ddddddd IPC ddddddd}->{EPS ACK PD BPC IPC}or{EPS NACK PD EPSEND}
 //{PD GNDSTN xxx yyy sssssssssssss}->{EPS ACK PD GNDSTN}or{EPS NACK PD EPSEND}
 int pd_check(){
 int pd=(int)((receive_symbol[0]==P)&&(receive_symbol[1]==D));
@@ -366,13 +366,13 @@ int pd_gndstn=(int)(
     (receive_symbol[9 ]==G)&&(receive_symbol[10]==N)&&(receive_symbol[11]==D)&&
     (receive_symbol[21]==S)&&(receive_symbol[22]==T)&&(receive_symbol[23]==N)
 );
-int spcipcvalid=(int)(
+int bpcipcvalid=(int)(
     (receive_symbol[9 ]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
     (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)&&
     (receive_symbol[2 ]==space)&&(receive_symbol[12]==space)&&(receive_symbol[20]==space)
 );
-if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
-  if(pd_pause && spcipcvalid){//pd pause && spcipcvalid
+if( (pd_pause && bpcipcvalid) || pd_gndstn ){//pd detected
+  if(pd_pause && bpcipcvalid){//pd pause && bpcipcvalid
   symbol_pause_count=((ascii_to_dec(receive_symbol[13])*1000000)+
                       (ascii_to_dec(receive_symbol[14])*100000 )+
                       (ascii_to_dec(receive_symbol[15])*10000  )+
@@ -389,7 +389,7 @@ if( (pd_pause && spcipcvalid) || pd_gndstn ){//pd detected
                              ascii_to_dec(receive_symbol[31])        );
   eps_response();byte_transmit(space);ack_response();byte_transmit(space);byte_transmit(P);byte_transmit(D);byte_transmit(space);
   byte_transmit(P);byte_transmit(A);byte_transmit(U);byte_transmit(S);byte_transmit(E);byte_transmit(space);epsend_response();
-  }//pd pause && spcipcvalid
+  }//pd pause && bpcipcvalid
   if(pd_gndstn){//pd_gndstn
      int inclusivestartindex=(
                              (ascii_to_dec(receive_symbol[10])*100)+
