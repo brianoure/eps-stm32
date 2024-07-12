@@ -363,13 +363,15 @@ int pd_pause=(int)(
 );
 int pd_gndstn=(int)(
     pd&&(receive_symbol[2]==space)&&
-    (receive_symbol[9 ]==G)&&(receive_symbol[10]==N)&&(receive_symbol[11]==D)&&
-    (receive_symbol[21]==S)&&(receive_symbol[22]==T)&&(receive_symbol[23]==N)
+    (receive_symbol[3 ]==G)&&(receive_symbol[4 ]==N)&&(receive_symbol[5 ]==D)&&
+    (receive_symbol[6 ]==S)&&(receive_symbol[7 ]==T)&&(receive_symbol[8 ]==N)
 );
 int bpcipcvalid=(int)(
-    (receive_symbol[9 ]==S)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
+    (receive_symbol[9 ]==B)&&(receive_symbol[10]==P)&&(receive_symbol[11]==C)&&
     (receive_symbol[21]==I)&&(receive_symbol[22]==P)&&(receive_symbol[23]==C)&&
-    (receive_symbol[2 ]==space)&&(receive_symbol[12]==space)&&(receive_symbol[20]==space)
+    (receive_symbol[2 ]==space)&&(receive_symbol[8 ]==space)&&
+    (receive_symbol[12]==space)&&(receive_symbol[20]==space)&&
+    (receive_symbol[24]==space)
 );
 if( (pd_pause && bpcipcvalid) || pd_gndstn ){//pd detected
   if(pd_pause && bpcipcvalid){//pd pause && bpcipcvalid
