@@ -26,8 +26,8 @@
 //0x32=50,KDIS ,Kill DISable                   ,GCS   ,EPS   , {KDIS} ->{ACK KDIS}or{NACK}
 
 //OK1....parameter
-int binary_pause_count=1000000;
-int intermission_pause_count=1000000;
+int binary_pause_count=1000000;//must be faster in sending than receiving
+int intermission_pause_count=1000000;//must be faster in sending than receiving
 
 //OK1.....needed?
 int payload_status=0;
@@ -1224,6 +1224,7 @@ int statusframebitnumber=0;
 int transmit_bit_position=0;
 
 
+//timing:worst case scenario all commands are executed
 int executeframe(){//action
 ping_check();
 gd_check();
